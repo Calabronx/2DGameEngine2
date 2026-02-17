@@ -1,0 +1,55 @@
+Diseño el juego
+
+2D
+texturas sprites
+
+Architectura
+
+El juego es en una grilla de 2D
+
+el personaje se mueve a traves de la grilla en X/Y (filas/columnas)
+
+hay enemigos, que tienen un patron de movimiento corto, se mueven de izq a der sobre la fila y de arriba hacia Abajo sobre 
+
+el mapa es un laberinto
+
+tiene bloques que bloquean el paso
+
+
+
+Objetivo:
+
+El personaje debe eliminar todos los enemigos de la Plataforma sin ser tocado, poniendo trampas sobre los caminos
+
+const
+el jugador puede poner una trampa a la vez, y esta puede ser destrabada
+el jugador tiene n limite de 2 trampas equipadas
+el jugador debe agarrar as trampas en el mapa, debe esquivar los enemigos
+
+
+
+// cambios - idea de juego de terror
+
+el jugador se mueve con una vela, mismo esquema de juego top down, 
+
+tiene que mantener la vela encendida para poder pasar por el laberinto que esta oscuro
+
+el jugador puede encender las velas en puntos especifigos (llamas, aceite,et)
+
+en la oscuridad hay sombras, que van a intentar agarrarlo,son enemigos que se mueven en un patron
+
+const
+si al jugador se le apaga la vela, los enemigos pueden hacerle daño y arrastrarlo a la oscuridad
+objetivo
+
+2 condiciones de Victoria del nivel
+1 - el jugador debe escaper y lograr llegar al punto final del laberinto sin que las sombras lo atrapen(que la vela no se apague)
+
+2 - el jugador debe mantener la vela encendida y quemar a los enemigos, matarlos a todos sin que la vela se apague, para poder ganar el nivel
+
+ 
+
+
+
+
+

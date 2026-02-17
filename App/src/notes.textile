@@ -1,0 +1,15 @@
+/**
+ * //TODO
+ * Objetivo: desarrollar juego de gemas, estrategia, el jugador tiene que rotar gemas y diamantes,
+ * matchear lineas horizontales y verticales de 3 o 4 o mas
+ * al matchear una linea las gemas deben destruirse y deben caer las de arriba tipo efecto cascada (creando nuevas)
+ * si matchean 4, se destruyen las tres y la cuarta se convierte en una gema especial
+ * 
+ * 
+ * Refencia del juego Bejeweld 3
+ * 
+ * diseñar una clase que maneje los niveles del juego
+ * Que genere niveles random
+ * 
+ *  
+*/ 
