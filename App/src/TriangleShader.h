@@ -17,4 +17,6 @@ class TriangleShader : public Engine::Layer
 		uint32_t m_Background_Shader = 0;
 		uint32_t m_VertexArray = 0;
 		uint32_t m_VertexBuffer = 0;
+		uint32_t m_BVertexArray = 0;
+		uint32_t m_BVertexBuffer = 0;
 };

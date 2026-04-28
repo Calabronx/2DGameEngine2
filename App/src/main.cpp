@@ -9,7 +9,7 @@
 int main(int argc,  char* argv[])
 {
     Engine::ApplicationSpecification appSpec;
-    appSpec.Name = "AppSpecification";
+    appSpec.Name = "TriangleRingApp";
     appSpec.WindowSpec.Width = 800;
     appSpec.WindowSpec.Height = 600;
 

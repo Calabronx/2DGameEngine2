@@ -6,9 +6,10 @@ uniform float iTime;
 // Resolución de pantalla (width, height, unused)
 uniform vec3 iResolution;
 
+uniform vec4 backroundColor;
+
 // Color final del fragmento (pixel)
 out vec4 fragColor;
-
 
 // ------------------------------------------------------------
 // Generador de paleta procedural usando coseno
@@ -49,8 +50,6 @@ void main()
     // OJO: actualmente NO acumula color,
     // solo pisa fragColor cada iteración.
 
-    vec3 background = vec3(0.02, 0.02, 0.05);
-    vec3 finalColor = background;
     for (int i = 0; i < 4; ++i)
     {
         // --------------------------------------------------------
@@ -80,7 +79,7 @@ void main()
         // d * 8.0  -> frecuencia espacial (cantidad de anillos)
         // iTime*3  -> velocidad de animación
         // --------------------------------------------------------
-        d = sin(d * 8.0 + iTime * 3.0) / 6.0;
+        d = sin(d * 2.0 + iTime * 1.0) / 6.0;
 
         // Hacemos el valor siempre positivo
         d = abs(d);
