@@ -96,7 +96,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -113,7 +113,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -130,7 +130,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -147,7 +147,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -155,11 +155,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\AudioVisualApp.cpp" />
-    <ClCompile Include="src\balls_app_layer.cpp" />
-    <ClCompile Include="src\app_layer.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\TriangleShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\GameMazeSurvivalProject.vcxproj">
@@ -167,10 +165,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\AudioVisualApp.h" />
-    <ClInclude Include="src\balls_app_layer.h" />
-    <ClInclude Include="src\app_layer.h" />
-    <ClInclude Include="src\TriangleShader.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="src\game\game.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\background_random_color.fs" />

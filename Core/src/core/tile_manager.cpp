@@ -1,6 +1,5 @@
 #include "tile_manager.h"
 
-#include "renderer/renderer.h"
 #include <glm/glm.hpp>
 #include "application.h"
 
@@ -27,13 +26,14 @@ namespace Engine {
 		 * 
 		 * 
 		 **/ 
+		// GRID 8 X 8
 		std::vector<std::vector<uint32_t>> tileData = {
-			{5,5,5,5,5,5,5,5},
-			{5,5,5,5,5,5,5,5},
-			{4,4,4,4,0,0,0,0},
-			{4,1,4,1,4,2,2,1},
-			{3,3,3,3,3,3,3,3},
-			{3,3,3,3,3,1,3,3},
+			{3,2,2,1,1,2,2,3},
+			{2,2,2,1,1,2,2,2},
+			{2,2,1,1,1,1,2,2},
+			{2,2,1,1,1,1,2,2},
+			{2,2,1,1,1,1,2,2},
+			{2,2,1,1,1,1,2,2},
 			{2,2,2,2,2,2,2,2},
 			{2,2,2,2,2,2,2,2}
 		};
@@ -51,26 +51,32 @@ namespace Engine {
 				if (tileData[col][row] >= 1)
 				{
 					glm::vec3 color = glm::vec3(1.0f);
-					if (tileData[col][row] == 2)
-						color = glm::vec3(0.2f, 0.6f, 1.0f);
-					else if (tileData[col][row] == 3)
+					// if (tileData[col][row] == 2)
+					// 	color = glm::vec3(0.2f, 0.6f, 1.0f);
+					// else if (tileData[col][row] == 3)
+					// 	color = glm::vec3(0.0f, 0.7f, 0.0f);
+
+					if (tileData[col][row] == 3)
 						color = glm::vec3(0.0f, 0.7f, 0.0f);
-					else if (tileData[col][row] == 4)
-						color = glm::vec3(0.8f, 0.8f, 0.4f);
-					else if (tileData[col][row] == 5)
-						color = glm::vec3(1.0f, 0.5f, 0.0f);
+					// else if (tileData[col][row] == 4)
+					// 	color = glm::vec3(0.8f, 0.8f, 0.4f);
+					// else if (tileData[col][row] == 5)
+					// 	color = glm::vec3(1.0f, 0.5f, 0.0f);
 
 					glm::vec2 pos(unit_width * row, unit_height * col);
 					glm::vec2 size(unit_width, unit_height);
 
-					m_Tiles.push_back(GameObject(pos, size, tileData[col][row] == 2 ? Renderer::LoadTexture("textures/gema.png") 
-						: tileData[col][row] == 5 ? Renderer::LoadTexture("textures/gema_roja.png") : Renderer::LoadTexture("textures/gema_verde.png"), color));
+					
+					if (tileData[col][row] == 1)
+					{
+						m_Tiles.push_back(GameObject(pos, size, Renderer::LoadTexture("textures/grass_1.png"), color));
+					} else if (tileData[col][row] == 2 || tileData[col][row] == 3){
 
-					// m_Tiles.push_back(GameObject(pos, size, Renderer::LoadTexture("textures/block.png") , color));
+						m_Tiles.push_back(GameObject(pos, size, Renderer::LoadTexture("textures/grass_2.png"), color));
+					}
 				}
 			}
 		}
-
 	}
 
 	void TileManager::Render(Renderer::SpriteRenderer& renderer)

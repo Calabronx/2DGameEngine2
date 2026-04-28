@@ -21,16 +21,25 @@
 class GameObject
 {
 	public:
-		GameObject();
-		GameObject(glm::vec2 pos, glm::vec2 size, Renderer::Texture sprite, glm::vec3 color, glm::vec2 velocity);
-		GameObject(glm::vec2 pos, glm::vec2 size, Renderer::Texture sprite, glm::vec3 color);
+								GameObject();
 
+								GameObject	(glm::vec2 pos,
+									   		 glm::vec2 size, 
+									   		 Renderer::Texture sprite,
+									   		 glm::vec3 color,
+											 glm::vec2 velocity);
+								GameObject	(glm::vec2 pos,
+											 glm::vec2 size,
+											 Renderer::Texture sprite,
+											 glm::vec3 color);
 
-		bool IsDestroyed() { return m_Destroyed; };
+		virtual 				~GameObject() {}
 
-		virtual void RenderObject(Renderer::SpriteRenderer& renderer);
+		bool 					IsDestroyed() { return m_Destroyed; };
 
-	private:
+		virtual void 			RenderObject(Renderer::SpriteRenderer& renderer);
+
+	protected:
 		glm::vec2 m_Position;
 		glm::vec2 m_Velocity;
 		glm::vec2 m_Size;
