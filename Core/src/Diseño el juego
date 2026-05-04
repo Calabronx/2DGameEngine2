@@ -49,9 +49,166 @@ objetivo
 
  juego de mesa?
 
- 
+1) Plataforma
+Juego 2D para PC
+Genero: Survival
+Plataforma: Windows
+Top Down
+
+1.1) Idea - concepto
+
+
+El jugador debe agarrar ramas y hacer antorchas para plantar en el mapa, alrededor del personaje, para que estas almas se mantengan a distancia
+
+El jugador encuentra una vara magica, que le permitira encender llamas que auyentan a las almas
+
+Tiene un frasco especial en el cual puede atrapar las almas, pero es limitado y se puede usar con una cantidad de energia magica o energia de almas, 
+
+La mecanica principal es defenderse con fuego plantado en la escena, (como barreras), limitado, y dominar las o espiritus y recolectarlos en su frasco( como almas salvadas )
+
+
+1.2) Breve historia
+
+El jugador se encuentra en un bosque oscuro y desolado, no recuerda que sucedio y por que esta ahi, con un dolor de cabeza, encuentra en el bolsillo una nota que dice que se quede
+cerca del fuego o el bosque podria devorarlo en su propia oscuridad.
+
+Se encuentra una llama en el medio del mapa, se acerca, esa sera la principal meccanica del juego para defenderse y sobrevivir
+
+Se encuentra un frasco, el cual sera su item clave para meter dentro las almas
+
+Almas oscuras dan vueltas en el bosque, se acercaran al centro y seguiran al jugador si este se acerca para llevarlo a la oscuridad
+
+- otra historia
+
+El jugador se encarna en la piel de Santhorn de 18 años en el siglo XV, perdido en la vida sin saber que hacer y sin tener ninguna idea de lo que quiere dedicarse en su vida, luego de varios intentos de encontrarlo. Siempre en su pueblo se habla bastante sobre un bosque cercano donde los adultos mencionan en viejas historias, siempre tenido como un lugar peligroso y prohibido para ingresar, sobre todo a los niños, en sus epocas de que el pueblo pasaba hambre y mala racha de pocas lluvias para los cultivos, un  dia un hombre que se adentro habia descubierto una fruta bastante rara y especial, nunca visto, al probarlo se dio cuenta de lo delicioso y jugoso que era, y satisfactiorio para el hambre que resultaba comerlo, en su camino en regreso noto ruidos extraños y sencaciones de ser observado detras de los matorrales, lo cual le provoco un miedo, con una sensacion de ser atraido por un deseo enorme hacia el bosque,un poco de lucha por no perder el sentimiento de nostalgia y de extrañar a sus familiares, logro lucharlo y volver con los frutos en abundancia que se conseguian , descubriendo que podian alimentar a familias enteras, pero luego de que los hombres que iban a recolectar regresaban con esos frutos (manzanas enormes, naranjas de color extraño pero muy sabrosas, limones violetas) volvian cambiados, al adentrarse en los bosques, algunos se alejaban de los grupos de recoleccion que se habian armado, algunos eran tentados y no volvian, por mas que tengan hijos y una mujer esperando en casa, desaparecian para no ser jamas vistos, ignoraban al llamado de los demas, parecia que algunos eran mas vulnerables al deseo del bosque. 
+
+una plaga sucedio hace poco, ademas de la ambruna, por ende dejo debilitado a los pueblerinos, viven al rededor de 2000 personas en el pueblo, hombres, mujeres de de 35 40 años y ancianos y ancianas, pocos niños
+
+Santhorn volvia a escuchar estas historias, el pueblo pasaba hambre y sentia la motivacion de descubrir el bosque, de rencontrar sus preciosos frutos y aportar su parte
+
+Un dia bajo todo pronostico y ignorando toda advertencia, a muy altas horas de la noche se escapo al bosque
+
+El presonaje encontraria el escenario del juego luego de esta breve introduccion.
+
+Encontraria los items del juego y los frutos, los frutos podrian ser otro feature o pickup
+
+El personaje quiere adentrarse de curioso, ver si la historia de los frutos es real y si hay algo realmente extraño. 
+
+Se encontrara con espiritus, espiritus peligrosos, que fueron una vez personas
+
+
+1.3) Ambientacion
+
+El juego sucede en un bosque oscuro de noche en un mundo de la edad antigua (edad media siglo XV año 1300 - 1492)
+
+1.4) Estructura del juego
+
+El juego tendra 5 niveles, cada nivel tendria una ambientacion oscura en el mismo bosque, la cantidad de enemigos (espiritus,ahogados,monstruos)
+
+
+1.5) Gameplay
+
+1.5.1) Jugador
+Sera un juego de PC donde el juego es jugado por un solo jugador, podra jugarse con teclado y mouse unicamente. WASD para mover al personaje y usar el mouse para plantar fuego, recolectar almas.
+
+1.5.2) Accion
+El jugador es capaz de agarrar espiritus malignos y guardarlas en un frasco para poder salvarlas y ganar puntos de almas, podra defenderse con fuego de los espiritus, podra recoletar items de vida y de energia espiritual para poder recolectar almas.
+
+1.7) Objectivo
+
+El jugador debe recuperar las almas perdidas de su miseria(las que pueda lograr, otras pueden no ser salvadas) al final de cada nivel se muestra el conteo de almas salvadas y sobrevir a no ser llevado a la osucirad ( las almas intentaran arrastrar al jugador fuera del mapa, osea a la oscuridad)
+
+El jugador debe recolectar items de alma(energia espiritual) para poder luego poder encantar un espiritu y dejarlo vulnerable (esta mecanica se hace un el mouse, seleccionando el encantamiento y dando click en el espiritu cercano en el radio de alcance) vulnerando al espiritu, el siguiente paso es seleccionar el frasco y luego al espiritu, para atraparlo.
+
+
+1.7.1) Victoria y derrota
+- El jugador debe ganar el nivel juntando una cantidad de almas (5 en el lvl1 ej)
+- Antes que llegue la medianoche y poder escapar al siguiente nivel
+- El jugador pierde el nivel si es atrapado por las almas o si no logra juntar la cantidad de almas necesaria para poder viajar, o escapar al siguiente nivel
+El jugador debe terminar los niveles para ganar el juego.
+El jugador perdera el juego si es atrapado por las almas malignas.
+
+Inspiracion en Pacman
+
+El jugador podra defenderse de las almas posicionando fuego al rededor suyo ( en un rango de 9 tiles) sera limitado, deberia utilizar algun encantamiento para convertir a las almas vulnerables( como en pacman, cuando comes un item grande y los fantasmas se asustan, pudiendo comerlos a ellos)
+
+1.7.2) Sistemas definidos - aca quiero definir los sistemas para programar, en
+pseudocodigo
+
+Sistema de inventario
+ * Encantamientos
+ - es un pickup
+ - ralentiza y estunea a los espiritus, haciendolos vulnerables por 5 segundos
+ - permite utilizar el frasco de almas con el
+ * Consumibles
+  - curan vida
+ * 
+Sistema de captura
+ - funciona con el frasco de almas
+ - es fijo, se agarra al iniciar el juego
+ - permite alojar almas encantadas
+ - devuelve puntos por cada tipo de alma
+
+Sistema de luz
+- Reduce la velocidad de los enemigos
+- Bloquea el avance
+- Alumbra el camino oscuro
+
+Sistema de movimiento
+- el jugador se mueve con WASD
+- puede utilizar el inventario con el mouse
+- puede utilizar el frasco(sistema de captura) con el mouse
+
+Sistema de entidades
+- spawnea entidades
+- control de las entidades
+- destruccion de entidades
+
+Enemigos
+
+Espiritu gris
+- saca 5 de daño
+- si el jugador llega vida a 0 lo atrapa y lo lleva a la oscuridad
+Espiritu violeta
+- saca 10 de daño
+- si el jugador llega vida a 0 lo atrapa y lo lleva a la oscuridad
+Espiritu rojo
+- atrapa al jugador y lo lleva a la oscuridad si llega a agarrarlo
+
+Enemigos IA
+- Spawnear
+Comportamiento
+- Buscar al jugador con un pathfinding ( definir mas esto )
+_ Si el jugador es encontrado en un rango cercano, atacar
+- dar daño al jugador con la variable del espiritu
+- si la vida del jugador llega a 0, arrastar afuera del mapa cambiando la condicion de juego
+- si es encantado:
+	- reduce velocidad
+	- estuneado
+	- vulnerable para ser atrapado
+
+Estado. 
+- Normal en oscuridad
+- Vulnerable al ser encantado
+
+Objectivo:
+- acercarse al jugador y lastimarlo hasta poder arrastrarlo a la oscuridad
 
 
 
+1.7.3) Game Loop
 
+Inicio
+	El jugador revisa el inventario
+	Almas empiezan a spwanear afuera de la pantalla, en diferentes posiciones random
+	Posicionar velas o fuego para que no te atrapen
+	Recolectar items espirituales
+	
+	Frasco habilitado para usar con un item espiritual
+		Encantar alma cercana
+		Atraparla en un rango de 5 segundos de tiempo habil
+		aguantar el tiempo definido
+Fin
 
+1.8) Graficos
+El juego sera un TOP Down 2D con sprites,el motor usara tiles para armar los niveles, utilizare OpenGl como la especificacion principal para renderizar las texturas,colores y los shaders

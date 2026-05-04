@@ -155,7 +155,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="player.cpp" />
+    <ClCompile Include="src\game\player_physics.cpp" />
+    <ClCompile Include="src\game\player_graphics.cpp" />
+    <ClCompile Include="src\game\spirit_saver.cpp" />
+    <ClCompile Include="src\game\input_player.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
@@ -165,7 +168,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="player.h" />
+    <ClInclude Include="src\game\player_physics.h" />
+    <ClInclude Include="src\game\player_graphics.h" />
+    <ClInclude Include="src\game\spirit_saver.h" />
+    <ClInclude Include="src\game\input_player.h" />
     <ClInclude Include="src\game\game.h" />
   </ItemGroup>
   <ItemGroup>

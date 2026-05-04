@@ -17,8 +17,6 @@ namespace Application
 	Game::Game()
 	{
 		// m_BackgroundTexture = Renderer::LoadTexture("textures/grid.png");
-
-
 	    // m_Shader = Renderer::CreateShader("shaders/sprite.vs", "shaders/sprite.fs");
 	    m_SpriteRenderer = std::make_shared<Renderer::SpriteRenderer>();
 
@@ -48,7 +46,6 @@ namespace Application
 	{
 		SDL_Event event;
 	    std::map<SDL_Keycode, bool> keyMap;
-	    // std::cout << "App Layer OnUpdate()" << std::endl;
 	    while(SDL_PollEvent(&event))
 	    {
 	        switch(event.type)
