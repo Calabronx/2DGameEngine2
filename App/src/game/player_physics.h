@@ -1,5 +1,8 @@
 #pragma once
 #include "core/physics.h"
+#include <core/data/entities/entity.h>
+
+#include <glm/glm.hpp>
 
 class PlayerPhysicsComponent : public PhysicsComponent 
 {
@@ -18,9 +21,12 @@ class PlayerPhysicsComponent : public PhysicsComponent
 		bool IsCollision(GameEntity& entity1, GameEntity& entity2) const;
 
 	private:
+		bool m_IsIdle;
 		bool m_IsWalkingRight;
 		bool m_IsWalkingLeft;
 		bool m_IsWalkingUp;
 		bool m_IsWalkingDown;
+
+		glm::vec2 m_LastPosition;
 };
 

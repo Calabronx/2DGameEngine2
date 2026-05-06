@@ -1,5 +1,6 @@
 #pragma once
-#include "data/entities/entity.h"
+
+class GameEntity;
 class PhysicsComponent
 {
 	public:

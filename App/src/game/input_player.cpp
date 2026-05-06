@@ -5,10 +5,6 @@
 
 namespace Application
 {
-	PlayerInputComponent::PlayerInputComponent()
-	{
-	}
-
 	void PlayerInputComponent::Update(GameEntity& entity, KeyDirection::Direction direction)
 	{
 		switch (direction)
@@ -34,6 +30,10 @@ namespace Application
 		entity.m_Position.y += position.y * entity.m_Velocity.y;
 
 		std::cout << "X: " << entity.m_Position.x << " Y: " << entity.m_Position.y << " " << std::endl;
+	}
+
+	void PlayerInputComponent::SetDirection()
+	{
 	}
 
 }

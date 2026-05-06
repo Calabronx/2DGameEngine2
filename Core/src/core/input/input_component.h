@@ -2,9 +2,9 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include "../data/entities/entity.h"
 #include "keyboard.h"
 
+class GameEntity;
 class InputComponent
 {
 

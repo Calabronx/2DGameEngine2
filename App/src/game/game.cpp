@@ -11,22 +11,35 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../../stb_image/stb_image.h"
+#include "input_player.h"
+#include "player_graphics.h"
+#include "player_physics.h"
+
+constexpr int INITIAL_X_POS = 375;
+constexpr int INITIAL_Y_POS = 275;
+constexpr int INITIAL_X_SIZE = 50;
+constexpr int INITIAL_Y_SIZE = 35;
+constexpr float PLAYER_VELOCITY = 0.80f;
 
 namespace Application
 {
 	Game::Game()
 	{
 		// m_BackgroundTexture = Renderer::LoadTexture("textures/grid.png");
-	    // m_Shader = Renderer::CreateShader("shaders/sprite.vs", "shaders/sprite.fs");
 	    m_SpriteRenderer = std::make_shared<Renderer::SpriteRenderer>();
 
 	    glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
 	    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(framebufferSize.x), static_cast<float>(framebufferSize.y), 0.0f, -1.0f, 1.0f);
 
-	    glm::vec2 playerPosition(375, 275);
-	    glm::vec2 playerSize(50.0f,35.0f);
-	    const float PLAYER_VELOCITY = 0.80f;
-		m_PlayerInstance = new Player(playerPosition, playerSize, Renderer::LoadTexture("textures/character.png"), glm::vec3(1.0f) , glm::vec2(PLAYER_VELOCITY));
+	    glm::vec2 playerPosition(INITIAL_X_POS, INITIAL_Y_POS);
+	    glm::vec2 playerSize(INITIAL_X_SIZE,INITIAL_Y_SIZE);
+		//m_PlayerInstance = new Player(playerPosition, playerSize, Renderer::LoadTexture("textures/character.png"), glm::vec3(1.0f) , glm::vec2(PLAYER_VELOCITY));
+	    m_PlayerInstance = CreatePlayer();
+
+	    m_PlayerInstance->m_Position = playerPosition;
+	    m_PlayerInstance->m_Size = playerSize;
+	    m_PlayerInstance->m_Velocity = glm::vec2(PLAYER_VELOCITY);
+	    m_PlayerInstance->m_Color = glm::vec3(1.0f);
 
 	    glUseProgram(m_Shader);
 	    glUniform1i(glGetUniformLocation(m_Shader, "image"), 0);
@@ -59,13 +72,14 @@ namespace Application
 	                if (keyMap[SDLK_ESCAPE])
 	                    Engine::Application::GetInstance().Stop();
 	                if (keyMap[SDLK_a])
-	                	m_PlayerInstance->Move(glm::vec2(-5.0f, 0.0f));
+	                	//m_PlayerInstance->Move(glm::vec2(-5.0f, 0.0f));
+	                	m_PlayerInstance->Update(*m_SpriteRenderer);
 	                if (keyMap[SDLK_d])
-	                	m_PlayerInstance->Move(glm::vec2(5.0f, 0.0f));
+	                	//m_PlayerInstance->Move(glm::vec2(5.0f, 0.0f));
 	                if (keyMap[SDLK_s])
-	                	m_PlayerInstance->Move(glm::vec2(0.0f, 5.0f));
+	                	//m_PlayerInstance->Move(glm::vec2(0.0f, 5.0f));
 	                if (keyMap[SDLK_w])
-	                	m_PlayerInstance->Move(glm::vec2(0.0f, -5.0f));
+	                	//m_PlayerInstance->Move(glm::vec2(0.0f, -5.0f));
 	                std::cout << "key down" << std::endl;
 	                break;
 
@@ -82,8 +96,22 @@ namespace Application
 	    // m_SpriteRenderer->RenderSprite(m_BackgroundTexture, glm::vec2(0.0f, 0.0f), glm::vec2(framebufferSize.x, framebufferSize.y), 0.0f);
 	    m_GameGrid.Render(*m_SpriteRenderer);
 
-	    m_PlayerInstance->RenderObject(*m_SpriteRenderer);
+	    //m_PlayerInstance->RenderObject(*m_SpriteRenderer);
+	    m_PlayerInstance->Update(*m_SpriteRenderer);
 	    glViewport(0, 0, framebufferSize.x, framebufferSize.y);
 	    glGetError();
 	}
+
+	GameEntity* Game::CreatePlayer()
+	{
+		PlayerInputComponent	*input	  = new PlayerInputComponent();
+		PlayerPhysicsComponent	*physics  = new PlayerPhysicsComponent();
+		PlayerGraphicsComponent	*graphics = new PlayerGraphicsComponent(physics);
+
+		return new GameEntity(input,
+							  physics,
+							  graphics);
+	}
+
+	
 }

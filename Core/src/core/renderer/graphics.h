@@ -1,9 +1,9 @@
 #pragma once
 #ifndef GRAPHICS_COMPONENT_H
 #define GRAPHICS_COMPONENT_H
-#include "../data/entities/entity.h"
 #include "sprite_renderer.h"
 
+class GameEntity;
 class GraphicsComponent
 {
 	public:

@@ -7,9 +7,8 @@
 #include <core/renderer/renderer.h>
 #include <core/renderer/sprite_renderer.h>
 #include <core/tile_manager.h>
-
+#include <core/data/entities/entity.h>
 #include <cstdint>
-#include "../../player.h"
 
 namespace Application {
 	class Game : public Engine::Layer
@@ -21,12 +20,14 @@ namespace Application {
 			virtual void OnUpdate(float ts) override;
 			virtual void OnRender() override;
 
+			GameEntity* CreatePlayer();
+
 		private:
 			std::shared_ptr<Renderer::SpriteRenderer> 	m_SpriteRenderer;
 			Renderer::Texture 							m_BackgroundTexture;
 			Engine::TileManager 						m_GameGrid;
 
-			Application::Player 						*m_PlayerInstance;
+			GameEntity 									*m_PlayerInstance;
 
 			uint32_t 	m_Shader = 0;
 			uint32_t 	m_VertexArray = 0;
