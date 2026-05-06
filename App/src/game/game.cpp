@@ -19,7 +19,7 @@ constexpr int INITIAL_X_POS = 375;
 constexpr int INITIAL_Y_POS = 275;
 constexpr int INITIAL_X_SIZE = 50;
 constexpr int INITIAL_Y_SIZE = 35;
-constexpr float PLAYER_VELOCITY = 0.80f;
+constexpr int PLAYER_VELOCITY = 1;
 
 namespace Application
 {
@@ -33,6 +33,7 @@ namespace Application
 
 	    glm::vec2 playerPosition(INITIAL_X_POS, INITIAL_Y_POS);
 	    glm::vec2 playerSize(INITIAL_X_SIZE,INITIAL_Y_SIZE);
+
 		//m_PlayerInstance = new Player(playerPosition, playerSize, Renderer::LoadTexture("textures/character.png"), glm::vec3(1.0f) , glm::vec2(PLAYER_VELOCITY));
 	    m_PlayerInstance = CreatePlayer();
 
@@ -40,6 +41,8 @@ namespace Application
 	    m_PlayerInstance->m_Size = playerSize;
 	    m_PlayerInstance->m_Velocity = glm::vec2(PLAYER_VELOCITY);
 	    m_PlayerInstance->m_Color = glm::vec3(1.0f);
+
+	    m_Entities.push_back(m_PlayerInstance);
 
 	    glUseProgram(m_Shader);
 	    glUniform1i(glGetUniformLocation(m_Shader, "image"), 0);
@@ -72,18 +75,19 @@ namespace Application
 	                if (keyMap[SDLK_ESCAPE])
 	                    Engine::Application::GetInstance().Stop();
 	                if (keyMap[SDLK_a])
-	                	//m_PlayerInstance->Move(glm::vec2(-5.0f, 0.0f));
-	                	m_PlayerInstance->Update(*m_SpriteRenderer);
+	                	m_Entities[0]->GetInput()->Update(*m_PlayerInstance, KeyDirection::Direction::DIR_LEFT);
 	                if (keyMap[SDLK_d])
-	                	//m_PlayerInstance->Move(glm::vec2(5.0f, 0.0f));
+	                	m_Entities[0]->GetInput()->Update(*m_PlayerInstance, KeyDirection::Direction::DIR_RIGHT);
 	                if (keyMap[SDLK_s])
-	                	//m_PlayerInstance->Move(glm::vec2(0.0f, 5.0f));
+	                	m_Entities[0]->GetInput()->Update(*m_PlayerInstance, KeyDirection::Direction::DIR_DOWN);
 	                if (keyMap[SDLK_w])
-	                	//m_PlayerInstance->Move(glm::vec2(0.0f, -5.0f));
+	                	m_Entities[0]->GetInput()->Update(*m_PlayerInstance, KeyDirection::Direction::DIR_UP);
+	                
 	                std::cout << "key down" << std::endl;
+	        		m_Entities[0]->GetPhysics()->Update(*m_PlayerInstance);
 	                break;
-
 	        }
+
 	    }
 	}
 
@@ -102,7 +106,7 @@ namespace Application
 	    glGetError();
 	}
 
-	GameEntity* Game::CreatePlayer()
+	GameEntity* Game::CreatePlayer() // aca uso el "patron factory" para crear una entidad de jugador
 	{
 		PlayerInputComponent	*input	  = new PlayerInputComponent();
 		PlayerPhysicsComponent	*physics  = new PlayerPhysicsComponent();

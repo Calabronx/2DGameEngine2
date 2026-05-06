@@ -18,7 +18,10 @@ void PlayerGraphicsComponent::Update(GameEntity& entity, Renderer::SpriteRendere
 	// {
 	// 	sprite = &m_SpriteIdle;
 	// }
-
 	sprite = &m_SpriteIdle;
-	renderer.RenderSprite(sprite->texture, entity.m_Position,entity.m_Size, entity.m_Rotation, entity.m_Color);
+	renderer.RenderSprite(sprite->texture,
+	 					  entity.m_Position,
+	  					  entity.m_Size,
+	   					  entity.m_Rotation,
+	    				  entity.m_Color);
 }

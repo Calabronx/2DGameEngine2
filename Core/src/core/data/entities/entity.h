@@ -3,6 +3,7 @@
 #define GAME_ENTITY
 
 #include <glm/glm.hpp>
+#include <cstdint>
 #include "../../input/input_component.h"
 #include "../../physics.h"
 #include "../../renderer/graphics.h"
@@ -19,18 +20,24 @@ class GameEntity
 
 		bool 					IsDestroyed() { return m_Destroyed; };
 
+		InputComponent* 		GetInput() { return m_Input; };
+		PhysicsComponent* 		GetPhysics() { return m_Physics; };
+		GraphicsComponent* 		GetGraphics() { return m_Graphics; };
+
 	public:
-		glm::vec2 m_Position;
-		glm::vec2 m_Velocity;
-		glm::vec2 m_Size;
-		glm::vec3 m_Color;
-		float m_Rotation;
+		uint32_t	m_Id = 0;
+
+		glm::vec2 	m_Position;
+		glm::vec2 	m_Velocity;
+		glm::vec2 	m_Size;
+		glm::vec3 	m_Color;
+		float 		m_Rotation;
 	private:
 		bool m_Destroyed;
 
 		InputComponent 		*m_Input;
-		GraphicsComponent 	*m_Graphics;
 		PhysicsComponent	*m_Physics;
+		GraphicsComponent 	*m_Graphics;
 };
 
 #endif

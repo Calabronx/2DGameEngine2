@@ -9,6 +9,7 @@
 #include <core/tile_manager.h>
 #include <core/data/entities/entity.h>
 #include <cstdint>
+#include <vector>
 
 namespace Application {
 	class Game : public Engine::Layer
@@ -28,6 +29,8 @@ namespace Application {
 			Engine::TileManager 						m_GameGrid;
 
 			GameEntity 									*m_PlayerInstance;
+
+			std::vector <GameEntity*> 					m_Entities;
 
 			uint32_t 	m_Shader = 0;
 			uint32_t 	m_VertexArray = 0;

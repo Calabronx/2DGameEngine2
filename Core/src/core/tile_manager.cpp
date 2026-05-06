@@ -71,7 +71,6 @@ namespace Engine {
 					{
 						m_Tiles.push_back(GameObject(pos, size, Renderer::LoadTexture("textures/grass_1.png"), color));
 					} else if (tileData[col][row] == 2 || tileData[col][row] == 3){
-
 						m_Tiles.push_back(GameObject(pos, size, Renderer::LoadTexture("textures/grass_2.png"), color));
 					}
 				}

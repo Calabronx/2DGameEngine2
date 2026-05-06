@@ -10,5 +10,10 @@ namespace KeyDirection
 		DIR_DOWN,
 	};
 
+	//Direction GetKeyboardInput()
+	//{
+	//	return Direction;
+	//}
+
 };
 
