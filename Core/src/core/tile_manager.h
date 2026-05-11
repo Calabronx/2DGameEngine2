@@ -5,6 +5,7 @@
 #include <vector>
 #include "renderer/sprite_renderer.h"
 #include "game_object.h"
+#include "data/entities/entity.h"
 
 namespace Engine {
 
@@ -20,11 +21,13 @@ namespace Engine {
 
 		private:
 			void GenerateTileBoard(const uint32_t boardWidth, const uint32_t boardHeight);
+			GameEntity* CreateTile();
 
 
 
 		private:
 			std::vector<GameObject> m_Tiles;
+			std::vector<GameEntity*> m_TilesEntities;
 	};
 }
 

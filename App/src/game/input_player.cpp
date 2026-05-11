@@ -2,39 +2,39 @@
 #include <SDL.h>
 #include <iostream>
 #include <map>
+#include <core/input/input.h>
+#include <core/application.h>
 
 namespace Application
 {
-	void PlayerInputComponent::Update(GameEntity& entity, KeyDirection::Direction direction)
+	void PlayerInputComponent::Update(GameEntity& entity)
 	{
-		switch (direction)
+		entity.m_Velocity.x = 0;
+    	entity.m_Velocity.y = 0;
+    	float time = Engine::Application::GetTime();
+
+		if (Input::IsKeyPressed(SDL_SCANCODE_W))
 		{
-		        case KeyDirection::Direction::DIR_UP:
-		            // MovePlayer(entity, glm::vec2(0.0f, -5.0f));
-		            entity.m_Velocity.y -= WALK_ACCELERATION;
-		            break;
-				case KeyDirection::Direction::DIR_RIGHT:
-		            // MovePlayer(entity, glm::vec2(5.0f, 0.0f));
-		            entity.m_Velocity.x += WALK_ACCELERATION;
-		            break;
-				case KeyDirection::Direction::DIR_LEFT:
-		            // MovePlayer(entity, glm::vec2(-5.0f, 0.0f));
-		            entity.m_Velocity.x -= WALK_ACCELERATION;
-		            break;
-				case KeyDirection::Direction::DIR_DOWN:
-		            // MovePlayer(entity, glm::vec2(0.0f, 5.0f));
-		            entity.m_Velocity.y += WALK_ACCELERATION;
-		            break;
+		    entity.m_Velocity.y -= WALK_ACCELERATION;
 		}
+
+		if (Input::IsKeyPressed(SDL_SCANCODE_D))
+		{
+		   	entity.m_Velocity.x += WALK_ACCELERATION * Engine::Application::GetTime() * 0.20f;
+		}
+
+		if (Input::IsKeyPressed(SDL_SCANCODE_A))
+		{
+		    entity.m_Velocity.x -= WALK_ACCELERATION;
+		}
+
+		if (Input::IsKeyPressed(SDL_SCANCODE_S))
+		{
+		    entity.m_Velocity.y += WALK_ACCELERATION;
+		}
+
+		std::cout << "velocity player X: " << entity.m_Velocity.x << " Y: " << entity.m_Velocity.y << " " << std::endl;
 	}
-
-	// void PlayerInputComponent::MovePlayer(GameEntity& entity, glm::vec2 position)
-	// {
-	// 	entity.m_Position.x += position.x * entity.m_Velocity.x;
-	// 	entity.m_Position.y += position.y * entity.m_Velocity.y;
-
-	// 	std::cout << "X: " << entity.m_Position.x << " Y: " << entity.m_Position.y << " " << std::endl;
-	// }
 
 	void PlayerInputComponent::SetDirection()
 	{

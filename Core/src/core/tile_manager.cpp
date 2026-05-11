@@ -1,5 +1,9 @@
 #include "tile_manager.h"
 
+#include "tile_input.h"
+#include "tile_physics.h"
+#include "tile_graphics.h"
+
 #include <glm/glm.hpp>
 #include "application.h"
 
@@ -70,12 +74,25 @@ namespace Engine {
 					if (tileData[col][row] == 1)
 					{
 						m_Tiles.push_back(GameObject(pos, size, Renderer::LoadTexture("textures/grass_1.png"), color));
+
+
 					} else if (tileData[col][row] == 2 || tileData[col][row] == 3){
 						m_Tiles.push_back(GameObject(pos, size, Renderer::LoadTexture("textures/grass_2.png"), color));
 					}
 				}
 			}
 		}
+	}
+
+	GameEntity* TileManager::CreateTile()
+	{
+		TileInputComponent *input = new TileInputComponent();
+		TilePhysicsComponent *physics = new TilePhysicsComponent();
+		TileGraphicsComponent *graphics = new TileGraphicsComponent(physics);
+
+		return new GameEntity(input,
+							  physics,
+							  graphics);
 	}
 
 	void TileManager::Render(Renderer::SpriteRenderer& renderer)

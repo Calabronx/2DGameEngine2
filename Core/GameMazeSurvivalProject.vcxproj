@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="..\OpenGL\include\glad\glad.c" />
     <ClCompile Include="..\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\core\input\input.cpp" />
     <ClCompile Include="src\core\physics.cpp" />
     <ClCompile Include="src\core\renderer\graphics.cpp" />
     <ClCompile Include="src\core\input\input_component.cpp" />
@@ -170,9 +171,13 @@
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\core\renderer\sprite.cpp" />
     <ClCompile Include="src\core\renderer\texture.cpp" />
+    <ClCompile Include="src\core\tile_physics.cpp" />
+    <ClCompile Include="src\core\tile_graphics.cpp" />
+    <ClCompile Include="src\core\tile_input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image\stb_image.h" />
+    <ClInclude Include="src\core\input\input.h" />
     <ClInclude Include="src\core\physics.h" />
     <ClInclude Include="src\core\renderer\graphics.h" />
     <ClInclude Include="src\core\input\keyboard.h" />
@@ -192,6 +197,9 @@
     <ClInclude Include="src\core\renderer\sprite.h" />
     <ClInclude Include="src\core\renderer\texture.h" />
     <ClInclude Include="src\vector2.h" />
+    <ClInclude Include="src\core\tile_physics.h" />
+    <ClInclude Include="src\core\tile_graphics.h" />
+    <ClInclude Include="src\core\tile_input.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

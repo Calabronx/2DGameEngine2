@@ -20,6 +20,9 @@ class PlayerPhysicsComponent : public PhysicsComponent
 		bool IsTakingDamage() const;
 		bool IsCollision(GameEntity& entity1, GameEntity& entity2) const;
 
+		void SetIdleState(bool state);
+		void DecreaseVelocity(GameEntity& entity) { --entity.m_Velocity;};
+
 	private:
 		bool m_IsIdle;
 		bool m_IsWalkingRight;

@@ -14,12 +14,13 @@
 #include "input_player.h"
 #include "player_graphics.h"
 #include "player_physics.h"
+#include <core/input/input.h>
 
 constexpr int INITIAL_X_POS = 375;
 constexpr int INITIAL_Y_POS = 275;
-constexpr int INITIAL_X_SIZE = 50;
-constexpr int INITIAL_Y_SIZE = 35;
-constexpr int PLAYER_VELOCITY = 1;
+constexpr int INITIAL_X_SIZE = 80;
+constexpr int INITIAL_Y_SIZE = 55;
+constexpr int PLAYER_VELOCITY = 0;
 
 namespace Application
 {
@@ -60,39 +61,26 @@ namespace Application
 
 	void Game::OnUpdate(float ts)
 	{
-		SDL_Event event;
-	    std::map<SDL_Keycode, bool> keyMap;
-	    while(SDL_PollEvent(&event))
-	    {
-	        switch(event.type)
-	        {
-	            case SDL_QUIT:
-	                std::cout << "quit" << std::endl;
-	                Engine::Application::GetInstance().Stop();
-	                break;
-	            case SDL_KEYDOWN:
-	                keyMap[event.key.keysym.sym] = true;         
-	                if (keyMap[SDLK_ESCAPE])
-	                    Engine::Application::GetInstance().Stop();
-	                if (keyMap[SDLK_a])
-	                	m_Entities[0]->GetInput()->Update(*m_PlayerInstance, KeyDirection::Direction::DIR_LEFT);
-	                if (keyMap[SDLK_d])
-	                	m_Entities[0]->GetInput()->Update(*m_PlayerInstance, KeyDirection::Direction::DIR_RIGHT);
-	                if (keyMap[SDLK_s])
-	                	m_Entities[0]->GetInput()->Update(*m_PlayerInstance, KeyDirection::Direction::DIR_DOWN);
-	                if (keyMap[SDLK_w])
-	                	m_Entities[0]->GetInput()->Update(*m_PlayerInstance, KeyDirection::Direction::DIR_UP);
-	                
-	                std::cout << "key down" << std::endl;
-	        		m_Entities[0]->GetPhysics()->Update(*m_PlayerInstance);
-	                break;
-	        }
+	    Input::Update();
 
+	    for (auto i = 0; i < m_Entities.size(); ++i)
+	    {
+	    	m_Entities[i]->GetInput()->Update(*m_Entities[i]);
+	    }
+
+	    for (auto i = 0; i < m_Entities.size(); ++i)
+	    {
+	    	m_Entities[i]->GetPhysics()->Update(*m_Entities[i]);
+	    }
+
+	    if (Input::QuitRequested() || Input::IsKeyPressed(SDL_SCANCODE_ESCAPE))
+	    {
+	    	Engine::Application::GetInstance().Stop();
 	    }
 	}
 
 	void Game::OnRender()
-	{
+	{	
 		glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 	    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
