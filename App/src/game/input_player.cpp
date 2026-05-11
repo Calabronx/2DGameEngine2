@@ -15,22 +15,22 @@ namespace Application
 
 		if (Input::IsKeyPressed(SDL_SCANCODE_W))
 		{
-		    entity.m_Velocity.y -= WALK_ACCELERATION;
+		    entity.m_Velocity.y -= WALK_ACCELERATION * 0.20f;
 		}
 
 		if (Input::IsKeyPressed(SDL_SCANCODE_D))
 		{
-		   	entity.m_Velocity.x += WALK_ACCELERATION * Engine::Application::GetTime() * 0.20f;
+		   	entity.m_Velocity.x += WALK_ACCELERATION * 0.20f;
 		}
 
 		if (Input::IsKeyPressed(SDL_SCANCODE_A))
 		{
-		    entity.m_Velocity.x -= WALK_ACCELERATION;
+		    entity.m_Velocity.x -= WALK_ACCELERATION * 0.20f;
 		}
 
 		if (Input::IsKeyPressed(SDL_SCANCODE_S))
 		{
-		    entity.m_Velocity.y += WALK_ACCELERATION;
+		    entity.m_Velocity.y += WALK_ACCELERATION * 0.20f;
 		}
 
 		std::cout << "velocity player X: " << entity.m_Velocity.x << " Y: " << entity.m_Velocity.y << " " << std::endl;
