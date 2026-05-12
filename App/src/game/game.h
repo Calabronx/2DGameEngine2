@@ -28,8 +28,6 @@ namespace Application {
 			Renderer::Texture 							m_BackgroundTexture;
 			Engine::TileManager 						m_GameGrid;
 
-			GameEntity 									*m_PlayerInstance;
-
 			std::vector <GameEntity*> 					m_Entities;
 
 			uint32_t 	m_Shader = 0;

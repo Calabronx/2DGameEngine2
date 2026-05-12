@@ -12,7 +12,7 @@ namespace Engine {
 	TileManager::TileManager()
 	{
 		glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
-		GenerateTileBoard(framebufferSize.x, framebufferSize.y);
+		GenerateTileBoard(static_cast<uint32_t>(framebufferSize.x), static_cast<uint32_t>(framebufferSize.y));
 	}
 
 	void TileManager::GenerateTileBoard(const uint32_t boardWidth, const uint32_t boardHeight)
@@ -42,8 +42,8 @@ namespace Engine {
 			{2,2,2,2,2,2,2,2}
 		};
 
-		uint32_t height = tileData.size();
-		uint32_t width = tileData[0].size();
+		std::size_t height = tileData.size();
+		std::size_t width = tileData[0].size();
 
 		float unit_width = boardWidth / static_cast<float>(width);
 		float unit_height = boardHeight / static_cast<float>(height);
@@ -74,6 +74,7 @@ namespace Engine {
 					if (tileData[col][row] == 1)
 					{
 						m_Tiles.push_back(GameObject(pos, size, Renderer::LoadTexture("textures/grass_1.png"), color));
+						m_TilesEntities.push_back(CreateTile(Renderer::LoadTexture("textures/grass_1.png")));
 
 
 					} else if (tileData[col][row] == 2 || tileData[col][row] == 3){
@@ -84,11 +85,11 @@ namespace Engine {
 		}
 	}
 
-	GameEntity* TileManager::CreateTile()
+	GameEntity* TileManager::CreateTile(Renderer::Texture tile)
 	{
 		TileInputComponent *input = new TileInputComponent();
 		TilePhysicsComponent *physics = new TilePhysicsComponent();
-		TileGraphicsComponent *graphics = new TileGraphicsComponent(physics);
+		TileGraphicsComponent *graphics = new TileGraphicsComponent(physics, tile);
 
 		return new GameEntity(input,
 							  physics,
@@ -103,5 +104,4 @@ namespace Engine {
 				tile.RenderObject(renderer);
 		}
 	}
-
 }

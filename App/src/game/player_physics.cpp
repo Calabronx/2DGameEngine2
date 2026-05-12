@@ -48,15 +48,15 @@ void PlayerPhysicsComponent::Update(GameEntity& entity)
         m_IsIdle = false;
     }
 
-    // if (entity.m_Velocity.x == 0 && entity.m_Velocity.y == 0)
-    // {
-    //     std::cout << "IS STAND" << std::endl;
-    //     m_IsIdle = true;
-    //     m_IsWalkingUp = false;
-    //     m_IsWalkingRight = false;
-    //     m_IsWalkingLeft = false;
-    //     m_IsWalkingDown = false;
-    // }
+    if (entity.m_Velocity.x == 0 && entity.m_Velocity.y == 0)
+    {
+        std::cout << "IS STAND" << std::endl;
+        m_IsIdle = true;
+        m_IsWalkingUp = false;
+        m_IsWalkingRight = false;
+        m_IsWalkingLeft = false;
+        m_IsWalkingDown = false;
+    }
 
     if(entity.m_Position.x == m_LastPosition.x)
     { 
@@ -65,11 +65,6 @@ void PlayerPhysicsComponent::Update(GameEntity& entity)
     entity.m_Position.x +=  entity.m_Velocity.x;
     entity.m_Position.y +=  entity.m_Velocity.y;
     m_LastPosition = entity.m_Position;
-
-
-    // entity.m_Velocity.x = 0;
-    // entity.m_Velocity.y = 0;
-    
 
     // std::cout << "X: " << entity.m_Position.x << " Y: " << entity.m_Position.y << " " << std::endl;
     // resolver colision con el mundo (coordenadas jugador)

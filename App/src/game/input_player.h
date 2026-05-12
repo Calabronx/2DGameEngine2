@@ -17,7 +17,7 @@ namespace Application
 			void SetDirection();
 
 		private:
-			static const int WALK_ACCELERATION = 1;
+			static const int WALK_ACCELERATION = 3;
 
 	};	
 };

@@ -35,15 +35,14 @@ namespace Application
 	    glm::vec2 playerPosition(INITIAL_X_POS, INITIAL_Y_POS);
 	    glm::vec2 playerSize(INITIAL_X_SIZE,INITIAL_Y_SIZE);
 
-		//m_PlayerInstance = new Player(playerPosition, playerSize, Renderer::LoadTexture("textures/character.png"), glm::vec3(1.0f) , glm::vec2(PLAYER_VELOCITY));
-	    m_PlayerInstance = CreatePlayer();
+	    GameEntity *Player = CreatePlayer();
 
-	    m_PlayerInstance->m_Position = playerPosition;
-	    m_PlayerInstance->m_Size = playerSize;
-	    m_PlayerInstance->m_Velocity = glm::vec2(PLAYER_VELOCITY);
-	    m_PlayerInstance->m_Color = glm::vec3(1.0f);
+	    Player->m_Position = playerPosition;
+	    Player->m_Size = playerSize;
+	    Player->m_Velocity = glm::vec2(PLAYER_VELOCITY);
+	    Player->m_Color = glm::vec3(1.0f);
 
-	    m_Entities.push_back(m_PlayerInstance);
+	    m_Entities.push_back(Player);
 
 	    glUseProgram(m_Shader);
 	    glUniform1i(glGetUniformLocation(m_Shader, "image"), 0);
@@ -88,9 +87,12 @@ namespace Application
 	    // m_SpriteRenderer->RenderSprite(m_BackgroundTexture, glm::vec2(0.0f, 0.0f), glm::vec2(framebufferSize.x, framebufferSize.y), 0.0f);
 	    m_GameGrid.Render(*m_SpriteRenderer);
 
-	    //m_PlayerInstance->RenderObject(*m_SpriteRenderer);
-	    m_PlayerInstance->Update(*m_SpriteRenderer);
-	    glViewport(0, 0, framebufferSize.x, framebufferSize.y);
+	    for (auto i = 0; i < m_Entities.size(); ++i)
+	    {
+	    	m_Entities[i]->Update(*m_SpriteRenderer);
+	    }
+
+	    glViewport(0, 0, static_cast<GLint>(framebufferSize.x), static_cast<GLint>(framebufferSize.y));
 	    glGetError();
 	}
 

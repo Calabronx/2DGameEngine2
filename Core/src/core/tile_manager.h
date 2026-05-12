@@ -19,11 +19,9 @@ namespace Engine {
 			void Render(Renderer::SpriteRenderer& renderer);
 			// void LoadFile(...);
 
+			GameEntity* CreateTile(Renderer::Texture tile);
 		private:
 			void GenerateTileBoard(const uint32_t boardWidth, const uint32_t boardHeight);
-			GameEntity* CreateTile();
-
-
 
 		private:
 			std::vector<GameObject> m_Tiles;

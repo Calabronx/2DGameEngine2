@@ -8,6 +8,7 @@
 namespace Engine {
 
     static Application* s_Application = nullptr;
+    static float s_DeltaTime = 0.0f;
 
     Engine::Application::Application(const ApplicationSpecification& specification)
         : m_Specification(specification)
@@ -45,20 +46,17 @@ namespace Engine {
     void Application::Run()
     {
         m_Running = true;
-        std::map<SDL_Keycode, bool> keyMap;
-
         float lastTime = GetTime();
 
         while(m_Running)
         {
             // manejar window closing
-            SDL_Event event;
-
             float currentTime = GetTime();
             float delta = currentTime - lastTime;
 
-
             float timestep = glm::clamp(currentTime - lastTime, 0.001f, 0.1f);
+
+            SetDeltaTime(timestep);
             lastTime = currentTime; 
 
             for (const std::unique_ptr<Layer>& layer : m_LayerStack)
@@ -96,5 +94,15 @@ namespace Engine {
     float Application::GetTime()
     {
         return (float) SDL_GetTicks();
+    }
+
+    void Application::SetDeltaTime(float time)
+    {
+		s_DeltaTime = time;
+    }
+
+    float Application::GetDeltaTime()
+    {
+        return s_DeltaTime;
     }
 }
