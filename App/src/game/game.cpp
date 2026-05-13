@@ -11,7 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../../stb_image/stb_image.h"
-#include "input_player.h"
+#include "player_input.h"
 #include "player_graphics.h"
 #include "player_physics.h"
 #include <core/input/input.h>
@@ -45,7 +45,24 @@ namespace Application
 	    Player->m_Velocity = glm::vec2(PLAYER_VELOCITY);
 	    Player->m_Color = glm::vec3(1.0f);
 
+
 	    m_Entities.push_back(Player);
+
+	    const int spiritsSize = 20;
+
+	    // std::vector<glm::vec2> enemyPositions = {glm::vec2()};
+
+	    for (auto i = 0; i < spiritsSize;++i)
+	    {
+	    	GameEntity *Spirit = CreateEnemy();
+
+	    	Spirit->m_ID = SPIRIT;
+	    	Spirit->m_Position = playerPosition;
+		    Spirit->m_Size = playerSize;
+		    Spirit->m_Velocity = glm::vec2(PLAYER_VELOCITY);
+		    Spirit->m_Color = glm::vec3(1.0f);
+
+	    }
 
 	    glUseProgram(m_Shader);
 	    glUniform1i(glGetUniformLocation(m_Shader, "image"), 0);
@@ -109,5 +126,15 @@ namespace Application
 							  graphics);
 	}
 
-	
+	GameEntity* Game::CreateEnemy() // aca uso el "patron factory" para crear una entidad de jugador
+	{
+		SpiritInputComponent	*input	  = new SpiritInputComponent();
+		SpiritPhysicsComponent	*physics  = new SpiritPhysicsComponent();
+		SpiritGraphicsComponent	*graphics = new SpiritGraphicsComponent(physics);
+
+		return new GameEntity(input,
+							  physics,
+							  graphics);
+	}
+
 }

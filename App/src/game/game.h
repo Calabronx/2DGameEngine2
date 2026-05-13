@@ -22,6 +22,7 @@ namespace Application {
 			virtual void OnRender() override;
 
 			GameEntity* CreatePlayer();
+			GameEntity* CreateEnemy();
 
 		private:
 			std::shared_ptr<Renderer::SpriteRenderer> 	m_SpriteRenderer;

@@ -21,10 +21,7 @@
     <ClCompile Include="src\game\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\input_player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\spirit_saver.cpp">
+    <ClCompile Include="src\game\player_input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\game\player_graphics.cpp">
@@ -33,21 +30,36 @@
     <ClCompile Include="src\game\player_physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\spirit_input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\spirit_graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\spirit_physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\input_player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\spirit_saver.h">
+    <ClInclude Include="src\game\player_input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\game\player_graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\game\player_physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\spirit_input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\spirit_graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\spirit_physics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
