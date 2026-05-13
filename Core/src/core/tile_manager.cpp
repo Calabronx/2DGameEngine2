@@ -9,13 +9,13 @@
 
 namespace Engine {
 
-	TileManager::TileManager()
+	TileManager::TileManager(std::vector<GameEntity*>& entities)
 	{
 		glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
-		GenerateTileBoard(static_cast<uint32_t>(framebufferSize.x), static_cast<uint32_t>(framebufferSize.y));
+		GenerateTileBoard(entities, static_cast<uint32_t>(framebufferSize.x), static_cast<uint32_t>(framebufferSize.y));
 	}
 
-	void TileManager::GenerateTileBoard(const uint32_t boardWidth, const uint32_t boardHeight)
+	void TileManager::GenerateTileBoard(std::vector<GameEntity*> &entities, const uint32_t boardWidth, const uint32_t boardHeight)
 	{
 		/**
 		 * 
@@ -73,12 +73,22 @@ namespace Engine {
 					
 					if (tileData[col][row] == 1)
 					{
-						m_Tiles.push_back(GameObject(pos, size, Renderer::LoadTexture("textures/grass_1.png"), color));
-						m_TilesEntities.push_back(CreateTile(Renderer::LoadTexture("textures/grass_1.png")));
+						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/grass_1.png"));
+						entityTile->m_Id = GRASS1;
+						entityTile->m_Position = pos;
+						entityTile->m_Size = size;
+						entityTile->m_Color = color;
 
+						entities.push_back(entityTile);
 
 					} else if (tileData[col][row] == 2 || tileData[col][row] == 3){
-						m_Tiles.push_back(GameObject(pos, size, Renderer::LoadTexture("textures/grass_2.png"), color));
+						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/grass_2.png"));
+						entityTile->m_Id = GRASS2;
+						entityTile->m_Position = pos;
+						entityTile->m_Size = size;
+						entityTile->m_Color = color;
+
+						entities.push_back(entityTile);
 					}
 				}
 			}
@@ -94,14 +104,5 @@ namespace Engine {
 		return new GameEntity(input,
 							  physics,
 							  graphics);
-	}
-
-	void TileManager::Render(Renderer::SpriteRenderer& renderer)
-	{
-		for (GameObject& tile : m_Tiles)
-		{
-			if (!tile.IsDestroyed())
-				tile.RenderObject(renderer);
-		}
 	}
 }

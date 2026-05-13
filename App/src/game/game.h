@@ -26,7 +26,7 @@ namespace Application {
 		private:
 			std::shared_ptr<Renderer::SpriteRenderer> 	m_SpriteRenderer;
 			Renderer::Texture 							m_BackgroundTexture;
-			Engine::TileManager 						m_GameGrid;
+			Engine::TileManager 						*m_GameGrid;
 
 			std::vector <GameEntity*> 					m_Entities;
 

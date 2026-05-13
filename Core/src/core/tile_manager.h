@@ -12,20 +12,19 @@ namespace Engine {
 	class TileManager
 	{
 		public:
-			TileManager();
+			TileManager(std::vector<GameEntity*> &entities);
 
 		public:
 			
-			void Render(Renderer::SpriteRenderer& renderer);
+			// void Render(Renderer::SpriteRenderer& renderer);
 			// void LoadFile(...);
 
 			GameEntity* CreateTile(Renderer::Texture tile);
 		private:
-			void GenerateTileBoard(const uint32_t boardWidth, const uint32_t boardHeight);
+			void GenerateTileBoard(std::vector<GameEntity*> &entities, const uint32_t boardWidth, const uint32_t boardHeight);
 
 		private:
-			std::vector<GameObject> m_Tiles;
-			std::vector<GameEntity*> m_TilesEntities;
+			// std::vector<GameEntity*> m_Entities;
 	};
 }
 

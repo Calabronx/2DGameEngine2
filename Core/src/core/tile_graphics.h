@@ -1,6 +1,8 @@
 #pragma once
 #include "renderer/graphics.h"
 #include "tile_physics.h"
+#include "data/entities/entity.h"
+
 class TileGraphicsComponent : public GraphicsComponent
 {
 	public:

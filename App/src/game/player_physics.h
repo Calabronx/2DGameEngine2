@@ -9,7 +9,7 @@ class PlayerPhysicsComponent : public PhysicsComponent
 	public:
 		PlayerPhysicsComponent();
 
-		virtual void Update(GameEntity& entity);
+		void Update(GameEntity& entity);
 
 		bool IsWalkingRightDirection() const;
 		bool IsWalkingLeftDirection() const;

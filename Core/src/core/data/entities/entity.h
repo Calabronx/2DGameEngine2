@@ -8,15 +8,18 @@
 #include "../../physics.h"
 #include "../../renderer/graphics.h"
 
+enum GameEntityType
+{
+	PLAYER,
+	GRASS1,
+	GRASS2
+};
+
 class GameEntity
 {
 	public:
-								GameEntity();
 								GameEntity(InputComponent* input, PhysicsComponent* physics ,GraphicsComponent *graphics);
-		// virtual 				~GameEntity() {}
-
-		// void 					Update(World& world, Graphics& graphics);
-		void 					Update(Renderer::SpriteRenderer& renderer);
+		 						~GameEntity() {}
 
 		bool 					IsDestroyed() { return m_Destroyed; };
 
