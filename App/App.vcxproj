@@ -162,6 +162,7 @@
     <ClCompile Include="src\game\player_graphics.cpp" />
     <ClCompile Include="src\game\player_input.cpp" />
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\world.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +178,7 @@
     <ClInclude Include="src\game\player_graphics.h" />
     <ClInclude Include="src\game\player_input.h" />
     <ClInclude Include="src\game\game.h" />
+    <ClInclude Include="src\game\world.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\background_random_color.fs" />

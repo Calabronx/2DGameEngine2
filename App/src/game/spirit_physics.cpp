@@ -2,4 +2,5 @@
 
 void SpiritPhysicsComponent::Update(GameEntity& entity)
 {
+	
 }

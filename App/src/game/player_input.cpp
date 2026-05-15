@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <iostream>
 #include <map>
+#include <glm/glm.hpp>
 #include <core/input/input.h>
 #include <core/application.h>
 
@@ -34,7 +35,17 @@ namespace Application
 		    entity.m_Velocity.y += WALK_ACCELERATION * deltaTime;
 		}
 
-		std::cout << "velocity player X: " << entity.m_Velocity.x << " Y: " << entity.m_Velocity.y << " " << std::endl;
+		if (Input::IsMousePressed())
+		{
+		    // entity.m_Velocity.y += WALK_ACCELERATION * deltaTime;
+			// std::cout << "mouse moved or pressed "<< std::endl;
+			
+		}
+
+		// glm::vec2 cursorPos = Input::GetCursorPosition();
+        // std::cout << "mouse x: " << cursorPos.x << " mouse y: " << cursorPos.y << std::endl;
+
+		// std::cout << "velocity player X: " << entity.m_Velocity.x << " Y: " << entity.m_Velocity.y << " " << std::endl;
 	}
 
 	void PlayerInputComponent::SetDirection()

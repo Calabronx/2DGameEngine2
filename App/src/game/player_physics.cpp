@@ -10,7 +10,7 @@ void PlayerPhysicsComponent::Update(GameEntity& entity)
 {
     if (entity.m_Velocity.x < 0)
     {
-        std::cout << "IS WALKING LEFT" << std::endl;
+        // std::cout << "IS WALKING LEFT" << std::endl;
         m_IsWalkingLeft = true;
         m_IsWalkingRight = false;
         m_IsWalkingDown = false;
@@ -20,7 +20,7 @@ void PlayerPhysicsComponent::Update(GameEntity& entity)
 
     if (entity.m_Velocity.x > 0)
     {
-        std::cout << "IS WALKING RIGHT" << std::endl;
+        // std::cout << "IS WALKING RIGHT" << std::endl;
         m_IsWalkingRight = true;
         m_IsWalkingLeft = false;
         m_IsWalkingDown = false;
@@ -30,7 +30,7 @@ void PlayerPhysicsComponent::Update(GameEntity& entity)
 
     if (entity.m_Velocity.y > 0)
     {
-        std::cout << "IS WALKING DOWN" << std::endl;
+        // std::cout << "IS WALKING DOWN" << std::endl;
         m_IsWalkingDown = true;
         m_IsWalkingRight = false;
         m_IsWalkingLeft = false;
@@ -40,7 +40,7 @@ void PlayerPhysicsComponent::Update(GameEntity& entity)
 
     if (entity.m_Velocity.y < 0)
     {
-        std::cout << "IS WALKING UP" << std::endl;
+        // std::cout << "IS WALKING UP" << std::endl;
         m_IsWalkingUp = true;
         m_IsWalkingRight = false;
         m_IsWalkingLeft = false;
@@ -50,7 +50,7 @@ void PlayerPhysicsComponent::Update(GameEntity& entity)
 
     if (entity.m_Velocity.x == 0 && entity.m_Velocity.y == 0)
     {
-        std::cout << "IS STAND" << std::endl;
+        // std::cout << "IS STAND" << std::endl;
         m_IsIdle = true;
         m_IsWalkingUp = false;
         m_IsWalkingRight = false;

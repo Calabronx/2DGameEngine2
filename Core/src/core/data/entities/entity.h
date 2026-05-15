@@ -11,6 +11,7 @@
 enum GameEntityType
 {
 	PLAYER,
+	SPIRIT,
 	GRASS1,
 	GRASS2
 };
@@ -22,6 +23,7 @@ class GameEntity
 		 						~GameEntity() {}
 
 		bool 					IsDestroyed() { return m_Destroyed; };
+		bool					IsSelected(glm::vec2 mousePos);
 
 		InputComponent* 		GetInput() { return m_Input; };
 		PhysicsComponent* 		GetPhysics() { return m_Physics; };

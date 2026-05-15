@@ -31,15 +31,26 @@ namespace Engine {
 		 * 
 		 **/ 
 		// GRID 8 X 8
+		// std::vector<std::vector<uint32_t>> tileData = {
+		// 	{3,2,2,1,1,2,2,3},
+		// 	{2,2,2,1,1,2,2,2},
+		// 	{2,2,1,1,1,1,2,2},
+		// 	{2,2,1,1,1,1,2,2},
+		// 	{2,2,1,1,1,1,2,2},
+		// 	{2,2,1,1,1,1,2,2},
+		// 	{2,2,2,2,2,2,2,2},
+		// 	{2,2,2,2,2,2,2,2}
+		// };
+
 		std::vector<std::vector<uint32_t>> tileData = {
-			{3,2,2,1,1,2,2,3},
-			{2,2,2,1,1,2,2,2},
-			{2,2,1,1,1,1,2,2},
-			{2,2,1,1,1,1,2,2},
-			{2,2,1,1,1,1,2,2},
-			{2,2,1,1,1,1,2,2},
-			{2,2,2,2,2,2,2,2},
-			{2,2,2,2,2,2,2,2}
+			{1,1,1,1,1,1,1,1},
+			{2,2,2,1,1,2,2,1},
+			{2,2,1,1,1,1,2,1},
+			{2,2,1,1,1,1,2,1},
+			{2,2,1,1,1,1,2,1},
+			{2,2,4,4,4,3,2,1},
+			{2,2,5,5,5,5,5,1},
+			{2,2,2,2,2,2,2,1}
 		};
 
 		std::size_t height = tileData.size();
@@ -55,17 +66,17 @@ namespace Engine {
 				if (tileData[col][row] >= 1)
 				{
 					glm::vec3 color = glm::vec3(1.0f);
-					// if (tileData[col][row] == 2)
-					// 	color = glm::vec3(0.2f, 0.6f, 1.0f);
-					// else if (tileData[col][row] == 3)
-					// 	color = glm::vec3(0.0f, 0.7f, 0.0f);
+					if (tileData[col][row] == 2)
+						color = glm::vec3(0.2f, 0.6f, 1.0f);
+					else if (tileData[col][row] == 3)
+						color = glm::vec3(0.0f, 0.7f, 0.0f);
 
 					if (tileData[col][row] == 3)
 						color = glm::vec3(0.0f, 0.7f, 0.0f);
-					// else if (tileData[col][row] == 4)
-					// 	color = glm::vec3(0.8f, 0.8f, 0.4f);
-					// else if (tileData[col][row] == 5)
-					// 	color = glm::vec3(1.0f, 0.5f, 0.0f);
+					else if (tileData[col][row] == 4)
+						color = glm::vec3(0.8f, 0.8f, 0.4f);
+					else if (tileData[col][row] == 5)
+						color = glm::vec3(1.0f, 0.5f, 0.0f);
 
 					glm::vec2 pos(unit_width * row, unit_height * col);
 					glm::vec2 size(unit_width, unit_height);
@@ -73,7 +84,7 @@ namespace Engine {
 					
 					if (tileData[col][row] == 1)
 					{
-						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/grass_1.png"));
+						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/block.png"));
 						entityTile->m_Id = GRASS1;
 						entityTile->m_Position = pos;
 						entityTile->m_Size = size;
@@ -81,8 +92,8 @@ namespace Engine {
 
 						entities.push_back(entityTile);
 
-					} else if (tileData[col][row] == 2 || tileData[col][row] == 3){
-						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/grass_2.png"));
+					} else {
+						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/block.png"));
 						entityTile->m_Id = GRASS2;
 						entityTile->m_Position = pos;
 						entityTile->m_Size = size;
