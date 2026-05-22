@@ -6,7 +6,7 @@ PlayerPhysicsComponent::PlayerPhysicsComponent()
 
 }
 
-void PlayerPhysicsComponent::Update(GameEntity& entity)
+void PlayerPhysicsComponent::Update(GameEntity& entity, World& world)
 {
     if (entity.m_Velocity.x < 0)
     {

@@ -9,12 +9,10 @@
 
 namespace Engine {
 
-	TileManager::TileManager(std::vector<GameEntity*>& entities)
+	TileManager::TileManager(std::vector<std::vector<uint32_t>>* tileGrid)
 	{
-		glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
-		GenerateTileBoard(entities, static_cast<uint32_t>(framebufferSize.x), static_cast<uint32_t>(framebufferSize.y));
+		m_TileGrid = tileGrid;
 	}
-
 	void TileManager::GenerateTileBoard(std::vector<GameEntity*> &entities, const uint32_t boardWidth, const uint32_t boardHeight)
 	{
 		/**
@@ -42,16 +40,8 @@ namespace Engine {
 		// 	{2,2,2,2,2,2,2,2}
 		// };
 
-		std::vector<std::vector<uint32_t>> tileData = {
-			{1,1,1,1,1,1,1,1},
-			{2,2,2,1,1,2,2,1},
-			{2,2,1,1,1,1,2,1},
-			{2,2,1,1,1,1,2,1},
-			{2,2,1,1,1,1,2,1},
-			{2,2,4,4,4,3,2,1},
-			{2,2,5,5,5,5,5,1},
-			{2,2,2,2,2,2,2,1}
-		};
+		std::vector<std::vector<uint32_t>> &tileData = *m_TileGrid;
+		
 
 		std::size_t height = tileData.size();
 		std::size_t width = tileData[0].size();
@@ -105,6 +95,7 @@ namespace Engine {
 			}
 		}
 	}
+
 
 	GameEntity* TileManager::CreateTile(Renderer::Texture tile)
 	{

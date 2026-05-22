@@ -2,7 +2,7 @@
 #include "input/input.h"
 #include <iostream>
 
-void TileInputComponent::Update(GameEntity& entity)
+void TileInputComponent::Update(GameEntity& entity, World& world)
 {
 	if (Input::IsMousePressed())
 	{

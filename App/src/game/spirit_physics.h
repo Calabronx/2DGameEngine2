@@ -4,6 +4,6 @@
 class SpiritPhysicsComponent : public PhysicsComponent
 {
 public:
-    void Update(GameEntity& entity);
+    void Update(GameEntity& entity, World& world);
 };
 

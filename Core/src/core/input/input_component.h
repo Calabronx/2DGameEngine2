@@ -3,14 +3,14 @@
 #define INPUT_COMPONENT_H
 
 #include "keyboard.h"
-#include <vector>
 
 class GameEntity;
+class World;
 class InputComponent
 {
 
 	public:
 		virtual ~InputComponent() {}
-		virtual void Update(GameEntity& entity, std::vector<GameEntity*> entities) = 0;
+		virtual void Update(GameEntity& entity, World& world) = 0;
 };
 #endif

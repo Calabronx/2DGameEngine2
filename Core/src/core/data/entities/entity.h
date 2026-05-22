@@ -19,11 +19,13 @@ enum GameEntityType
 class GameEntity
 {
 	public:
-								GameEntity(InputComponent* input, PhysicsComponent* physics ,GraphicsComponent *graphics);
+								GameEntity(InputComponent* input, PhysicsComponent* physics, GraphicsComponent *graphics);
 		 						~GameEntity() {}
 
 		bool 					IsDestroyed() { return m_Destroyed; };
 		bool					IsSelected(glm::vec2 mousePos);
+
+		glm::vec2				GetCenter() const;
 
 		InputComponent* 		GetInput() { return m_Input; };
 		PhysicsComponent* 		GetPhysics() { return m_Physics; };

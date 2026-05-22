@@ -8,7 +8,7 @@
 class SpiritInputComponent : public InputComponent
 {
     public:
-        void Update(GameEntity& entity);
+        void Update(GameEntity& entity, World& world);
 
 };
 #endif 

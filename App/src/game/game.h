@@ -11,6 +11,8 @@
 #include <cstdint>
 #include <vector>
 
+#include "core/world.h"
+
 namespace Application {
 	class Game : public Engine::Layer
 	{
@@ -21,15 +23,10 @@ namespace Application {
 			virtual void OnUpdate(float ts) override;
 			virtual void OnRender() override;
 
-			GameEntity* CreatePlayer();
-			GameEntity* CreateEnemy();
-
 		private:
+			World										*m_GameWorld;
 			std::shared_ptr<Renderer::SpriteRenderer> 	m_SpriteRenderer;
 			Renderer::Texture 							m_BackgroundTexture;
-			Engine::TileManager 						*m_GameGrid;
-
-			std::vector <GameEntity*> 					m_Entities;
 
 			uint32_t 	m_Shader = 0;
 			uint32_t 	m_VertexArray = 0;

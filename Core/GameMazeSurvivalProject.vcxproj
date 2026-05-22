@@ -174,9 +174,12 @@
     <ClCompile Include="src\core\tile_physics.cpp" />
     <ClCompile Include="src\core\tile_graphics.cpp" />
     <ClCompile Include="src\core\tile_input.cpp" />
+    <ClCompile Include="src\core\world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image\stb_image.h" />
+    <ClInclude Include="src\core\data\entities\ientity_factory.h" />
+    <ClInclude Include="src\core\grid_config.h" />
     <ClInclude Include="src\core\input\input.h" />
     <ClInclude Include="src\core\physics.h" />
     <ClInclude Include="src\core\renderer\graphics.h" />
@@ -196,6 +199,7 @@
     <ClInclude Include="src\core\resource.h" />
     <ClInclude Include="src\core\renderer\sprite.h" />
     <ClInclude Include="src\core\renderer\texture.h" />
+    <ClInclude Include="src\core\world.h" />
     <ClInclude Include="src\vector2.h" />
     <ClInclude Include="src\core\tile_physics.h" />
     <ClInclude Include="src\core\tile_graphics.h" />

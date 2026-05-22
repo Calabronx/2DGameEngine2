@@ -11,6 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../../stb_image/stb_image.h"
+#include "game_entity_factory.h"
 #include "player_input.h"
 #include "player_graphics.h"
 #include "player_physics.h"
@@ -41,42 +42,7 @@ namespace Application
 	    glm::vec2 playerSize(INITIAL_PLAYER_X_SIZE,INITIAL_PLAYER_Y_SIZE);
 	    glm::vec2 enemySize(INITIAL_ENEMY_X_SIZE,INITIAL_ENEMY_Y_SIZE);
 
-	    m_GameGrid = new Engine::TileManager(m_Entities);
-
-	    GameEntity *Player = CreatePlayer();
-
-	    Player->m_Id = PLAYER;
-	    Player->m_Position = playerPosition;
-	    Player->m_Size = playerSize;
-	    Player->m_Velocity = glm::vec2(PLAYER_VELOCITY);
-	    Player->m_Color = glm::vec3(1.0f);
-
-	    m_Entities.push_back(Player);
-
-	    // posiciones a ubicar las entidades
-	    std::vector<glm::vec2> enemyPositions = {
-	    	glm::vec2(22.382f, 29.1355f),
-	    	glm::vec2(339.393f, 13.6976f),
-	    	glm::vec2(708.326, 13.6976f),
-	    	glm::vec2(708.326, 309.459f),
-	    	glm::vec2(721.443f, 547.423f),
-	    	glm::vec2(326.427f, 547.423f),
-	    	glm::vec2(28.486f, 547.423f),
-	    };
-	    const int spiritsSize = enemyPositions.size();
-
-	    for (auto i = 0; i < spiritsSize;++i)
-	    {
-	    	GameEntity *Spirit = CreateEnemy();
-
-	    	Spirit->m_Id = SPIRIT;
-	    	Spirit->m_Position = enemyPositions[i];
-		    // Spirit->m_Size = playerSize; // por ahora le mandamos el mismo tamaño del jugador
-		    Spirit->m_Size = enemySize; // por ahora le mandamos el mismo tamaño del jugador
-		    Spirit->m_Velocity = glm::vec2(PLAYER_VELOCITY); // misma velocidad que el jugador
-		    Spirit->m_Color = glm::vec3(1.0f); // a definir, podria cambiar el color de una textura de espiritu
-		    m_Entities.push_back(Spirit);
-	    }
+	    m_GameWorld = new World(new GameEntityFactory());
 
 	    glUseProgram(m_Shader);
 	    glUniform1i(glGetUniformLocation(m_Shader, "image"), 0);
@@ -96,14 +62,16 @@ namespace Application
 	{
 	    Input::Update();
 
-	    for (auto i = 0; i < m_Entities.size(); ++i)
-	    {
-	    	m_Entities[i]->GetInput()->Update(*m_Entities[i], *m_Entities);
+		std::vector<GameEntity*> entities = m_GameWorld->GetEntities();
+
+	    for (auto i = 0; i < entities.size(); ++i)
+	    {	
+			entities[i]->GetInput()->Update(*entities[i], *m_GameWorld);
 	    }
 
-	    for (auto i = 0; i < m_Entities.size(); ++i)
+	    for (auto i = 0; i < entities.size(); ++i)
 	    {
-	    	m_Entities[i]->GetPhysics()->Update(*m_Entities[i]);
+			entities[i]->GetPhysics()->Update(*entities[i], *m_GameWorld);
 	    }
 
 	    if (Input::QuitRequested() || Input::IsKeyPressed(SDL_SCANCODE_ESCAPE))
@@ -120,35 +88,16 @@ namespace Application
 	    glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
 	    // m_SpriteRenderer->RenderSprite(m_BackgroundTexture, glm::vec2(0.0f, 0.0f), glm::vec2(framebufferSize.x, framebufferSize.y), 0.0f);
 
-	    for (auto i = 0; i < m_Entities.size(); ++i)
+		std::vector<GameEntity*> entities = m_GameWorld->GetEntities();
+
+	    for (auto i = 0; i < entities.size(); ++i)
 	    {
-	    	m_Entities[i]->GetGraphics()->Update(*m_Entities[i], *m_SpriteRenderer);
+			entities[i]->GetGraphics()->Update(*entities[i], *m_SpriteRenderer);
 	    }
 
 	    glViewport(0, 0, static_cast<GLint>(framebufferSize.x), static_cast<GLint>(framebufferSize.y));
 	    glGetError();
 	}
 
-	GameEntity* Game::CreatePlayer() // aca uso el "patron factory" para crear una entidad de jugador
-	{
-		PlayerInputComponent	*input	  = new PlayerInputComponent();
-		PlayerPhysicsComponent	*physics  = new PlayerPhysicsComponent();
-		PlayerGraphicsComponent	*graphics = new PlayerGraphicsComponent(physics);
-
-		return new GameEntity(input,
-							  physics,
-							  graphics);
-	}
-
-	GameEntity* Game::CreateEnemy() // aca uso el "patron factory" para crear una entidad de jugador
-	{
-		SpiritInputComponent	*input	  = new SpiritInputComponent();
-		SpiritPhysicsComponent	*physics  = new SpiritPhysicsComponent();
-		SpiritGraphicsComponent	*graphics = new SpiritGraphicsComponent(physics);
-
-		return new GameEntity(input,
-							  physics,
-							  graphics);
-	}
 
 }

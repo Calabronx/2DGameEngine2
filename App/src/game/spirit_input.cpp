@@ -1,5 +1,5 @@
 #include "spirit_input.h"
 
-void SpiritInputComponent::Update(GameEntity& entity)
+void SpiritInputComponent::Update(GameEntity& entity, World& world)
 {
 }

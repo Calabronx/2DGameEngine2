@@ -17,3 +17,16 @@ bool GameEntity::IsSelected(glm::vec2 mousePos)
 
 	return selected;
 }
+
+glm::vec2 GameEntity::GetCenter() const
+{
+	float x = m_Position.x;
+	float y = m_Position.y;
+	int w = m_Size.x;
+	int h = m_Size.y;
+
+	float xCenter = x + w / 2.0f;
+	float yCenter = y + h / 2.0f;
+
+	return glm::vec2(xCenter, yCenter);
+}

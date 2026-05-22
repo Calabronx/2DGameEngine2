@@ -2,13 +2,20 @@
 #include <SDL.h>
 #include <iostream>
 #include <map>
-#include <glm/glm.hpp>
 #include <core/input/input.h>
 #include <core/application.h>
+#include "core/world.h"
 
-namespace Application
-{
-	void PlayerInputComponent::Update(GameEntity& entity)
+	namespace
+	{
+		int g_tilePosition = 27;
+	};
+
+	PlayerInputComponent::PlayerInputComponent()
+	{
+	}
+
+	void PlayerInputComponent::Update(GameEntity& entity, World& world)
 	{
 		entity.m_Velocity.x = 0;
     	entity.m_Velocity.y = 0;
@@ -39,12 +46,35 @@ namespace Application
 		{
 		    // entity.m_Velocity.y += WALK_ACCELERATION * deltaTime;
 			// std::cout << "mouse moved or pressed "<< std::endl;
-			
+			glm::vec2 cursorPos = Input::GetCursorPosition();
+	        // std::cout << "mouse x: " << cursorPos.x << " mouse y: " << cursorPos.y << std::endl;
+			bool clicked = false;
+			for (auto i = 0; i < world.GetEntities().size() && !clicked; i++)
+			{
+				if(world.GetEntities()[i]->IsSelected(cursorPos)) // movimento del jugador en las tiles, deberia identificar si es una Tile real
+				{
+	        		std::cout << "tile id position : " << i << std::endl;
+					// glm::vec2 objective = world.GetEntities()[i]->GetCenter();
+					// entity.m_Position = objective - glm::vec2(entity.m_Size.x / 2.0f, entity.m_Size.y / 2.0f); // ubicar al jugador en el centro de la tile
+					if (g_tilePosition - 8 == i)
+					{
+						MoveGridPosition(entity, &world.GetEntities(), g_tilePosition - 8);
+					} else if (g_tilePosition + 8 == i)
+					{
+						MoveGridPosition(entity, &world.GetEntities(), g_tilePosition + 8);
+					} else if (g_tilePosition + 1 == i)
+					{
+						MoveGridPosition(entity, &world.GetEntities(), g_tilePosition + 1);
+					} else if (g_tilePosition - 1 == i)
+					{
+						MoveGridPosition(entity, &world.GetEntities(), g_tilePosition - 1);
+					}
+
+					clicked = true;
+					// std::cout << "jugador toco la entidad: " << world.GetEntities()[i]->m_Id << std::endl;
+				}
+			}
 		}
-
-		// glm::vec2 cursorPos = Input::GetCursorPosition();
-        // std::cout << "mouse x: " << cursorPos.x << " mouse y: " << cursorPos.y << std::endl;
-
 		// std::cout << "velocity player X: " << entity.m_Velocity.x << " Y: " << entity.m_Velocity.y << " " << std::endl;
 	}
 
@@ -52,4 +82,13 @@ namespace Application
 	{
 	}
 
-}
+	void PlayerInputComponent::MoveGridPosition(GameEntity& entity, std::vector<std::vector<uint32_t>> &grid, int index)
+	{
+		if (index > grid.size() - 1)
+			return;
+
+		glm::vec2 centerTile = grid[index]->GetCenter()
+		g_tilePosition = index;
+		entity.m_Position = centerTile - glm::vec2(entity.m_Size.x / 2.0f, entity.m_Size.y / 2.0f);
+	}
+
