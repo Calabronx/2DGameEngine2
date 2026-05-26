@@ -87,7 +87,7 @@
 		if (index > grid.size() - 1)
 			return;
 
-		glm::vec2 centerTile = grid[index]->GetCenter()
+		glm::vec2 centerTile = grid[index]->GetCenter();
 		g_tilePosition = index;
 		entity.m_Position = centerTile - glm::vec2(entity.m_Size.x / 2.0f, entity.m_Size.y / 2.0f);
 	}
