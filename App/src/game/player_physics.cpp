@@ -66,6 +66,12 @@ void PlayerPhysicsComponent::Update(GameEntity& entity, World& world)
     entity.m_Position.y +=  entity.m_Velocity.y;
     m_LastPosition = entity.m_Position;
 
+    
+
+    /**
+     * detectar el centro de la tile en donde estoy parado
+     **/ 
+
     // std::cout << "X: " << entity.m_Position.x << " Y: " << entity.m_Position.y << " " << std::endl;
     // resolver colision con el mundo (coordenadas jugador)
 }

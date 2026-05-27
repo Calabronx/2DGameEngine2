@@ -17,7 +17,7 @@
 			// void 		 MovePlayer(GameEntity& entity, glm::vec2 position);
 
 			void SetDirection();
-			void MoveGridPosition(GameEntity& entity, std::vector<std::vector<uint32_t>> &grid, int index);
+			void MoveGridPosition(GameEntity& entity, std::vector<GameEntity*> entities, int index);
 
 		private:
 			static const int WALK_ACCELERATION = 3;

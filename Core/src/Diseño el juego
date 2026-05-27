@@ -126,7 +126,7 @@ El jugador debe recolectar items de alma(energia espiritual) para poder luego po
 - Antes que llegue la medianoche y poder escapar al siguiente nivel
 - El jugador pierde el nivel si es atrapado por las almas o si no logra juntar la cantidad de almas necesaria para poder viajar, o escapar al siguiente nivel
 El jugador debe terminar los niveles para ganar el juego.
-El jugador perdera el juego si es atrapado por las almas malignas.
+El jugador perdera el juego si es atrapado por las almas malignas y se queda sin vidas.
 
 Inspiracion en Pacman
 
