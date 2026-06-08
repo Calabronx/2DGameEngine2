@@ -8,43 +8,20 @@
 #include "application.h"
 
 namespace Engine {
+	constexpr int ROW_CENTER = 110;
+	constexpr int COL_CENTER = 75;
 
-	TileManager::TileManager(std::vector<std::vector<uint32_t>>* tileGrid)
+	TileManager::TileManager(std::vector<std::vector<uint32_t>>* level)
 	{
-		m_TileGrid = tileGrid;
+		m_TileLevel = level;
 	}
-	void TileManager::GenerateTileBoard(std::vector<GameEntity*> &entities, const uint32_t boardWidth, const uint32_t boardHeight)
+	std::vector<GameEntity*> TileManager::GenerateTileBoard(const uint32_t boardWidth, const uint32_t boardHeight)
 	{
-		/**
-		 * 
-		 *  5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 	 
-			5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 	 
-			4 4 4 4 4 0 0 0 0 0 4 4 4 4 4 	 
-			4 1 4 1 4 0 0 1 0 0 4 1 4 1 4 	 
-			3 3 3 3 3 0 0 0 0 0 3 3 3 3 3 	 
-			3 3 1 3 3 3 3 3 3 3 3 3 1 3 3 	 
-			2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 	 
-			2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 	
-		 * 
-		 * 
-		 **/ 
-		// GRID 8 X 8
-		// std::vector<std::vector<uint32_t>> tileData = {
-		// 	{3,2,2,1,1,2,2,3},
-		// 	{2,2,2,1,1,2,2,2},
-		// 	{2,2,1,1,1,1,2,2},
-		// 	{2,2,1,1,1,1,2,2},
-		// 	{2,2,1,1,1,1,2,2},
-		// 	{2,2,1,1,1,1,2,2},
-		// 	{2,2,2,2,2,2,2,2},
-		// 	{2,2,2,2,2,2,2,2}
-		// };
+		std::vector<GameEntity*> tilesEntities;
+		std::vector<std::vector<uint32_t>> &tileLevelData = *m_TileLevel;
 
-		std::vector<std::vector<uint32_t>> &tileData = *m_TileGrid;
-		
-
-		std::size_t height = tileData.size();
-		std::size_t width = tileData[0].size();
+		std::size_t height = tileLevelData.size();
+		std::size_t width = tileLevelData[0].size();
 
 		float unit_width = boardWidth / static_cast<float>(width);
 		float unit_height = boardHeight / static_cast<float>(height);
@@ -53,49 +30,52 @@ namespace Engine {
 		{
 			for (uint32_t row = 0; row < width; ++row)
 			{
-				if (tileData[col][row] >= 1)
+				if (tileLevelData[col][row] >= 1)
 				{
 					glm::vec3 color = glm::vec3(1.0f);
-					if (tileData[col][row] == 2)
+					if (tileLevelData[col][row] == 2)
 						color = glm::vec3(0.2f, 0.6f, 1.0f);
-					else if (tileData[col][row] == 3)
+					else if (tileLevelData[col][row] == 3)
 						color = glm::vec3(0.0f, 0.7f, 0.0f);
 
-					if (tileData[col][row] == 3)
+					if (tileLevelData[col][row] == 3)
 						color = glm::vec3(0.0f, 0.7f, 0.0f);
-					else if (tileData[col][row] == 4)
+					else if (tileLevelData[col][row] == 4)
 						color = glm::vec3(0.8f, 0.8f, 0.4f);
-					else if (tileData[col][row] == 5)
+					else if (tileLevelData[col][row] == 5)
 						color = glm::vec3(1.0f, 0.5f, 0.0f);
 
 					glm::vec2 pos(unit_width * row, unit_height * col);
 					glm::vec2 size(unit_width, unit_height);
 
-					
-					if (tileData[col][row] == 1)
+					if (tileLevelData[col][row] == 1)
 					{
 						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/block.png"));
 						entityTile->m_Id = GRASS1;
+						entityTile->m_CellGrid.row = row;
+						entityTile->m_CellGrid.col = col;
 						entityTile->m_Position = pos;
 						entityTile->m_Size = size;
 						entityTile->m_Color = color;
 
-						entities.push_back(entityTile);
-
+						tilesEntities.push_back(entityTile);
 					} else {
 						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/block.png"));
 						entityTile->m_Id = GRASS2;
+						entityTile->m_CellGrid.row = row;
+						entityTile->m_CellGrid.col = col;
+						entityTile->m_TileIndex = col;
 						entityTile->m_Position = pos;
 						entityTile->m_Size = size;
 						entityTile->m_Color = color;
 
-						entities.push_back(entityTile);
+						tilesEntities.push_back(entityTile);
 					}
 				}
 			}
 		}
+		return tilesEntities;
 	}
-
 
 	GameEntity* TileManager::CreateTile(Renderer::Texture tile)
 	{

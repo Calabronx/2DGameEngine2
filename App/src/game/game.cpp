@@ -82,7 +82,7 @@ namespace Application
 
 	void Game::OnRender()
 	{	
-		glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 	    glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();

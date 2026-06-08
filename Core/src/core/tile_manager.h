@@ -12,14 +12,15 @@ namespace Engine {
 	class TileManager
 	{
 		public:
-							TileManager(std::vector<std::vector<uint32_t>> *tileGrid);
+							TileManager(std::vector<std::vector<uint32_t>> *level);
 
 		public:
-			GameEntity* 	CreateTile(Renderer::Texture tile);
-			void 			GenerateTileBoard(std::vector<GameEntity*> &entities, const uint32_t boardWidth, const uint32_t boardHeight);
+			GameEntity* 						CreateTile(Renderer::Texture tile);
+			std::vector<GameEntity*> 			GenerateTileBoard(const uint32_t boardWidth, const uint32_t boardHeight);
 
 		private:
-			std::vector<std::vector<uint32_t>> *m_TileGrid;
+			// capaz puede ser un struct de nivel
+			std::vector<std::vector<uint32_t>> *m_TileLevel;
 	};
 }
 

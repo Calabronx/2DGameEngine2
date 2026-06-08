@@ -4,6 +4,7 @@
 
 #include <core/input/input_component.h>
 #include <core/data/entities/entity.h>
+#include "player_physics.h"
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -11,7 +12,7 @@
 	class PlayerInputComponent : public InputComponent
 	{
 		public:
-			PlayerInputComponent();
+			PlayerInputComponent(PlayerPhysicsComponent* physics);
 			virtual void Update(GameEntity& entity, World& world);
 
 			// void 		 MovePlayer(GameEntity& entity, glm::vec2 position);
@@ -22,6 +23,7 @@
 		private:
 			static const int WALK_ACCELERATION = 3;
 
+			PlayerPhysicsComponent* m_PlayerPhysics;
 	};	
 #endif
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "core/physics.h"
 #include <core/data/entities/entity.h>
+#include <core/world.h>
 
 #include <glm/glm.hpp>
 
@@ -19,6 +20,7 @@ class PlayerPhysicsComponent : public PhysicsComponent
 
 		bool IsTakingDamage() const;
 		bool IsCollision(GameEntity& entity1, GameEntity& entity2) const;
+		bool IsCollision(glm::vec2 position1, glm::vec2 size1, glm::vec2 position2, glm::vec2 size2)const;
 
 		void SetIdleState(bool state);
 		void DecreaseVelocity(GameEntity& entity) { --entity.m_Velocity;};

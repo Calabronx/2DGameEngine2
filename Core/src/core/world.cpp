@@ -1,31 +1,54 @@
 #include "world.h"
 #include "application.h"
 #include "data/entities/entity.h"
+#include "util.h"
 
-constexpr int INITIAL_X_POS = 375;
-constexpr int INITIAL_Y_POS = 275;
-constexpr int INITIAL_PLAYER_X_SIZE = 80;
-constexpr int INITIAL_PLAYER_Y_SIZE = 55;
+constexpr int INITIAL_X_POS = 8;
+constexpr int INITIAL_Y_POS = 7;
+constexpr int INITIAL_PLAYER_X_SIZE = 50;
+constexpr int INITIAL_PLAYER_Y_SIZE = 50;
 constexpr int INITIAL_ENEMY_X_SIZE = 60;
 constexpr int INITIAL_ENEMY_Y_SIZE = 55;
 constexpr int PLAYER_VELOCITY = 0;
+constexpr int ROW_CENTER = 110;
+constexpr int COL_CENTER = 75;
+constexpr int WORLD_WIDTH = 800;  
+constexpr int WORLD_HEIGHT = 600;
+// constexpr int WORLD_WIDTH = 800 + ROW_CENTER; // el tamaño del ancho mas el centrado de la fila de la grilla 
+// constexpr int WORLD_HEIGHT = 600 + COL_CENTER; // el tamaño del alto mas el centrado de la col de la grilla
+
 
 World::World(IEntityFactory* factory)
 	: m_EntityFactory(factory)
-{
-	// inicializo 8x8 grid del mundo
-
-	m_GameGrid = {
-		{1,1,1,1,1,1,1,1},
-		{2,2,2,1,1,2,2,1},
-		{2,2,1,1,1,1,2,1},
-		{2,2,1,1,1,1,2,1},
-		{2,2,1,1,1,1,2,1},
-		{2,2,4,4,4,3,2,1},
-		{2,2,5,5,5,5,5,1},
-		{2,2,2,2,2,2,2,1}
-	};
 	
+{
+	glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
+	m_WorldBounds.bounds.x = 0.f;
+	m_WorldBounds.bounds.y = 0.f;
+	// m_WorldBounds.width = framebufferSize.x - 200; // posible side menu
+	m_WorldBounds.width = framebufferSize.x;
+	m_WorldBounds.height = framebufferSize.y;
+
+	// inicializo 8x8 grid del mundo
+	m_GameLevel = {
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{2,2,2,1,1,2,2,1,2,2,2,1,1,2},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+		{2,2,1,1,1,1,2,1,2,2,1,1,1,1},
+	};
+
 	InitializeEntities();
 }
 
@@ -36,9 +59,8 @@ World::~World()
 void World::InitializeEntities()
 {
 	glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
-
-	m_TileMap = new Engine::TileManager(&m_GameGrid);
-	m_TileMap->GenerateTileBoard(m_Entities, framebufferSize.x, framebufferSize.y);
+	m_TileMap = new Engine::TileManager(&m_GameLevel);
+	m_Entities = m_TileMap->GenerateTileBoard(m_WorldBounds.width, m_WorldBounds.height);
 
 	GameEntity* Player = m_EntityFactory->CreatePlayer();
 
@@ -47,11 +69,24 @@ void World::InitializeEntities()
 	glm::vec2 enemySize(INITIAL_ENEMY_X_SIZE,INITIAL_ENEMY_Y_SIZE);
 
 	Player->m_Id = PLAYER;
-
 	Player->m_Size = playerSize;
-	Player->m_Position = m_Entities[27]->GetCenter() - glm::vec2(
+	Player->m_CellGrid.row = INITIAL_X_POS;
+	Player->m_CellGrid.col = INITIAL_Y_POS;
+	Player->m_Position = m_Entities[m_GameLevel.size() / 2]->GetCenter() - glm::vec2(
 													Player->m_Size.x / 2.0f,
 													Player->m_Size.y / 2.0f); // ubicar al jugador en el centro de la tile
+
+	for (auto i = 0; i < m_Entities.size(); i++)
+	{
+		if (m_Entities[i]->m_CellGrid.row == INITIAL_X_POS 
+			&& m_Entities[i]->m_CellGrid.col == INITIAL_Y_POS)
+		{
+			 Player->m_Position = m_Entities[i]->m_Position;
+			 break;
+		}
+	}
+	
+	Player->m_TileIndex = m_GameLevel.size() / 2;
 	Player->m_Velocity = glm::vec2(PLAYER_VELOCITY);
 	Player->m_Color = glm::vec3(1.0f);
 

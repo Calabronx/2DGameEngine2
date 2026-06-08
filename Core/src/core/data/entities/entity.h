@@ -16,6 +16,11 @@ enum GameEntityType
 	GRASS2
 };
 
+struct Cell
+{
+	int row, col;
+};
+
 class GameEntity
 {
 	public:
@@ -33,7 +38,8 @@ class GameEntity
 
 	public:
 		uint32_t	m_Id = 0;
-
+		int 		m_TileIndex;
+		Cell		m_CellGrid;
 		glm::vec2 	m_Position;
 		glm::vec2 	m_Velocity;
 		glm::vec2 	m_Size;

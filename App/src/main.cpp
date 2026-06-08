@@ -9,8 +9,8 @@ int main(int argc,  char* argv[])
     Engine::ApplicationSpecification appSpec;
     // appSpec.Name = "TriangleRingApp";
     appSpec.Name = "Game";
-    appSpec.WindowSpec.Width = 800;
-    appSpec.WindowSpec.Height = 600;
+    appSpec.WindowSpec.Width = 1024;
+    appSpec.WindowSpec.Height = 768;
 
     Engine::Application application(appSpec);
     application.PushLayer<Application::Game>();

@@ -175,6 +175,7 @@
     <ClCompile Include="src\core\tile_graphics.cpp" />
     <ClCompile Include="src\core\tile_input.cpp" />
     <ClCompile Include="src\core\world.cpp" />
+    <ClCompile Include="src\core\util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image\stb_image.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="src\core\tile_physics.h" />
     <ClInclude Include="src\core\tile_graphics.h" />
     <ClInclude Include="src\core\tile_input.h" />
+    <ClInclude Include="src\core\util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

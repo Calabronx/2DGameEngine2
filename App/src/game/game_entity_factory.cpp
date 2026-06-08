@@ -8,8 +8,8 @@
 
 GameEntity* GameEntityFactory::CreatePlayer() // aca uso el "patron factory" para crear una entidad de jugador
 {
-    PlayerInputComponent* input = new PlayerInputComponent();
     PlayerPhysicsComponent* physics = new PlayerPhysicsComponent();
+    PlayerInputComponent* input = new PlayerInputComponent(physics);
     PlayerGraphicsComponent* graphics = new PlayerGraphicsComponent(physics);
 
     return new GameEntity(input,

@@ -8,6 +8,25 @@ PlayerPhysicsComponent::PlayerPhysicsComponent()
 
 void PlayerPhysicsComponent::Update(GameEntity& entity, World& world)
 {
+
+    glm::vec2 worldLimit = world.GetWorldLimits().bounds;
+    /*if (entity.m_Position.x > worldLimit.x)
+    {
+        std::cout << "SALIO DEL MAPA A LA DERECHA DEL MUNDO" << std::endl;
+    } else if (entity.m_Position.x < worldLimit.x)
+    {
+        std::cout << "SALIO DEL MAPA A LA IZQ DEL MUNDO" << std::endl;
+    } else if (entity.m_Position.y > worldLimit.y)
+    {
+        std::cout << "SALIO DEL MAPA ARRIBA DEL MUNDO" << std::endl;
+    } else if (entity.m_Position.y < worldLimit.y)
+    {
+        std::cout << "SALIO DEL MAPA ABAJO DEL MUNDO" << std::endl;
+    }*/
+
+    //if (entity.m_Position.x > )
+
+
     if (entity.m_Velocity.x < 0)
     {
         // std::cout << "IS WALKING LEFT" << std::endl;
@@ -66,8 +85,6 @@ void PlayerPhysicsComponent::Update(GameEntity& entity, World& world)
     entity.m_Position.y +=  entity.m_Velocity.y;
     m_LastPosition = entity.m_Position;
 
-    
-
     /**
      * detectar el centro de la tile en donde estoy parado
      **/ 
@@ -116,6 +133,26 @@ bool PlayerPhysicsComponent::IsTakingDamage() const
 
 bool PlayerPhysicsComponent::IsCollision(GameEntity& entity1, GameEntity& entity2) const
 {
-    return false;
+    float x = entity1.m_Position.x;
+    float y = entity1.m_Position.y;
+    int w = entity1.m_Size.x;
+    int h = entity1.m_Size.y;
+
+    bool collision = ((entity2.m_Position.x >= x) && (entity2.m_Position.x <= x + w))
+    && ((entity2.m_Position.y >= y) && (entity2.m_Position.y <= y + h));
+
+    return collision;
 }
 
+bool PlayerPhysicsComponent::IsCollision(glm::vec2 position1, glm::vec2 size1, glm::vec2 position2,glm::vec2 size2) const
+{
+    float x = position1.x;
+    float y = position1.y;
+    int w = size1.x;
+    int h = size1.y;
+
+    bool collision = ((position2.x >= x) && (position2.x <= x + w))
+    && ((position2.y >= y) && (position2.y <= y + h));
+
+    return collision;
+}
