@@ -17,16 +17,17 @@ namespace
 	bool g_Down = false;
 	bool g_Right = false;
 	bool g_Left = false;
+	bool g_Arrived = false;
 
 	struct TargetCell
 	{
 		glm::vec2 targetPosition;
 		glm::vec2 targetSize;
 		glm::ivec2 gridPosition;
+		bool isTarget = false;
 	};
 
 	TargetCell g_Target;
-
 };
 
 PlayerInputComponent::PlayerInputComponent(PlayerPhysicsComponent* physics)
@@ -44,76 +45,77 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 
 	const float deltaTime = Engine::Application::GetDeltaTime();
 
-	if (!g_Down && !g_Right && !g_Left && Input::IsKeyPressed(SDL_SCANCODE_W))
+	if (!g_IsMoving)
 	{
-		g_IsMoving = true;
-		g_Up = true;
-		g_Target.gridPosition.y -= 1;
-
-	}
-	else if (!g_Down && !g_Left && !g_Up && Input::IsKeyPressed(SDL_SCANCODE_D))
-	{
-		g_IsMoving = true;
-		g_Right = true;
-		g_Target.gridPosition.x += 1;
-	}
-	else if (!g_Down && !g_Up && !g_Right && Input::IsKeyPressed(SDL_SCANCODE_A))
-	{
-		g_IsMoving = true;
-		g_Left = true;
-		g_Target.gridPosition.x -= 1;
-	}
-	else if (!g_Up && !g_Right && !g_Left && Input::IsKeyPressed(SDL_SCANCODE_S))
-	{
-		g_IsMoving = true;
-		g_Down = true;
-		g_Target.gridPosition.y += 1;
-	}
-
-	for (auto i = 0; i < world.GetEntities().size(); i++)
-	{
-		GameEntity* tile = world.GetEntities()[i];
-		int colPosition = entity.m_CellGrid.col;
-		int rowPosition = entity.m_CellGrid.row;
-		if (rowPosition == world.GetEntities()[i]->m_CellGrid.row
-			&& colPosition == world.GetEntities()[i]->m_CellGrid.col)
+		if (Input::IsKeyPressed(SDL_SCANCODE_W))
 		{
-			g_Target.targetPosition = tile->m_Position;
-			g_Target.targetSize = tile->m_Size;
-			break;
+			g_IsMoving = true;
+			g_Up = true;
+			g_Target.gridPosition.y -= 1;
+		}
+		else if (Input::IsKeyPressed(SDL_SCANCODE_D))
+		{
+			g_IsMoving = true;
+			g_Right = true;
+			g_Target.gridPosition.x += 1;
+		}
+		else if (Input::IsKeyPressed(SDL_SCANCODE_A))
+		{
+			g_IsMoving = true;
+			g_Left = true;
+			g_Target.gridPosition.x -= 1;
+		}
+		else if (Input::IsKeyPressed(SDL_SCANCODE_S))
+		{
+			g_IsMoving = true;
+			g_Down = true;
+			g_Target.gridPosition.y += 1;
+		}
+	}
+
+	if (g_IsMoving && !g_Target.isTarget)
+	{
+		for (auto i = 0; i < world.GetEntities().size(); i++)
+		{
+			GameEntity* tile = world.GetEntities()[i];
+			int colPosition = g_Target.gridPosition.y;
+			int rowPosition = g_Target.gridPosition.x;
+			if (rowPosition == world.GetEntities()[i]->m_CellGrid.row
+				&& colPosition == world.GetEntities()[i]->m_CellGrid.col) // es una tile existente o caminable?
+			{
+				g_Target.targetPosition = tile->m_Position;
+				g_Target.targetSize = tile->m_Size;
+				g_Target.isTarget = true;
+				break;
+			}
 		}
 	}
 
 	if (g_IsMoving)
 	{
+		if (g_Up)
+			entity.m_Velocity.y -= WALK_ACCELERATION * deltaTime;
+		else if (g_Down)
+			entity.m_Velocity.y += WALK_ACCELERATION * deltaTime;
+		else if (g_Right)
+			entity.m_Velocity.x += WALK_ACCELERATION * deltaTime;
+		else if (g_Left)
+			entity.m_Velocity.x -= WALK_ACCELERATION * deltaTime;
+
 		if (m_PlayerPhysics->IsCollision(entity.m_Position, entity.m_Size, g_Target.targetPosition, g_Target.targetSize))
 		{
-			g_IsMoving = false;
 			entity.m_CellGrid.col = g_Target.gridPosition.y;
 			entity.m_CellGrid.row = g_Target.gridPosition.x;
+			g_IsMoving = false;
 			g_Up = false;
 			g_Down = false;
 			g_Right = false;
+			g_Left = false;
+			g_Target.isTarget = false;
+			g_Arrived = false;
 			return;
 		}
-
-		if (g_Up)
-		{
-			entity.m_Velocity.y -= WALK_ACCELERATION * deltaTime;
-
-		}
-		else if (g_Down)
-		{
-			entity.m_Velocity.y += WALK_ACCELERATION * deltaTime;
-		} else if (g_Right)
-		{
-			entity.m_Velocity.x += WALK_ACCELERATION * deltaTime;
-		} else if (g_Left)
-		{
-			entity.m_Velocity.x -= WALK_ACCELERATION * deltaTime;
-		}
 	}
-
 
 	if (Input::IsMousePressed())
 	{

@@ -13,7 +13,7 @@ namespace Engine {
 	Window::~Window()
 	{
 		DestroyWindow();
-		DestroySurface();
+		// DestroySurface();
 	}
 
 	void Window::CreateWindow()
