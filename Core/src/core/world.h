@@ -33,6 +33,8 @@ class World
 	public:
 		WorldLimits					GetWorldLimits() const { return m_WorldBounds; };
 
+		std::vector<std::vector<uint32_t>> GetGridLevel() const { return m_GameLevel; };
+
 	private:
 		IEntityFactory							*m_EntityFactory;
 		Engine::TileManager 					*m_TileMap;

@@ -13,7 +13,8 @@ enum GameEntityType
 	PLAYER,
 	SPIRIT,
 	GRASS1,
-	GRASS2
+	GRASS2,
+	WALL
 };
 
 struct Cell
