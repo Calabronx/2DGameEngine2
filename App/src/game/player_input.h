@@ -8,6 +8,15 @@
 #include <glm/glm.hpp>
 #include <vector>
 
+	struct TargetCell
+	{
+		glm::vec2 targetPosition;
+		glm::vec2 targetSize;
+		glm::vec2 targetCenter;
+		glm::ivec2 gridPosition;
+		bool isTarget = false;
+		uint32_t targetIDSelf;
+	};
 
 	class PlayerInputComponent : public InputComponent
 	{
@@ -18,6 +27,7 @@
 			// void 		 MovePlayer(GameEntity& entity, glm::vec2 position);
 
 			void SetDirection();
+			void GetMovementCells(World& world, TargetCell& target);
 			void MoveGridPosition(GameEntity& entity, std::vector<GameEntity*> entities, int index);
 
 		private:

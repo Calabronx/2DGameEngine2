@@ -25,6 +25,8 @@ class PlayerPhysicsComponent : public PhysicsComponent
 		void SetIdleState(bool state);
 		void DecreaseVelocity(GameEntity& entity) { --entity.m_Velocity;};
 
+		
+
 	private:
 		bool m_IsIdle;
 		bool m_IsWalkingRight;
