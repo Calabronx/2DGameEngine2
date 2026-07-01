@@ -43,7 +43,6 @@ class World
 		std::vector <GameEntity*> 				m_GridTiles;	// todas las tiles del mundo, ej
 
 		WorldLimits								m_WorldBounds;
-
 };
 
 #endif

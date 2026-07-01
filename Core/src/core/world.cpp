@@ -14,6 +14,11 @@ constexpr int ROW_CENTER = 110;
 constexpr int COL_CENTER = 75;
 constexpr int WORLD_WIDTH = 800;  
 constexpr int WORLD_HEIGHT = 600;
+
+constexpr int GRID_WIDTH = 13;
+constexpr int GRID_HEIGHT = 15;
+
+
 // constexpr int WORLD_WIDTH = 800 + ROW_CENTER; // el tamaño del ancho mas el centrado de la fila de la grilla 
 // constexpr int WORLD_HEIGHT = 600 + COL_CENTER; // el tamaño del alto mas el centrado de la col de la grilla
 
@@ -92,27 +97,43 @@ void World::InitializeEntities()
 
 	m_Entities.push_back(Player);
 
-	std::vector<glm::vec2> enemyPositions = {
-		glm::vec2(22.382f, 29.1355f),
-		glm::vec2(339.393f, 13.6976f),
-		glm::vec2(708.326, 13.6976f),
-		glm::vec2(708.326, 309.459f),
-		glm::vec2(721.443f, 547.423f),
-		glm::vec2(326.427f, 547.423f),
-		glm::vec2(28.486f, 547.423f),
+	std::vector<glm::ivec2> enemyCellPositions = {
+		glm::vec2(5, 3),
+		glm::vec2(7, 3),
+		glm::vec2(5, 9),
+		glm::vec2(7, 10),
+		glm::vec2(6, 10),
 	};
-	const int spiritsSize = enemyPositions.size();
+
+	std::vector<glm::ivec2> enemyVectorPositions;
+
+	for (int i = 0; i < enemyCellPositions.size(); ++i)
+	{
+		for (int j = 0; j < m_Entities.size(); ++j)
+		{
+			if (m_Entities[j]->m_Id == GRASS1 && m_Entities[j]->m_CellGrid.row == enemyCellPositions[i].x &&
+			 m_Entities[j]->m_CellGrid.col == enemyCellPositions[i].y)
+			{
+				enemyVectorPositions.push_back(m_Entities[j]->m_Position);
+				break;
+			}
+		}
+	}
+
+	const int spiritsSize = enemyVectorPositions.size();
 
 	for (auto i = 0; i < spiritsSize; ++i)
 	{
 		GameEntity* Spirit = m_EntityFactory->CreateEnemy();
 
 		Spirit->m_Id = SPIRIT;
-		Spirit->m_Position = enemyPositions[i];
+		Spirit->m_Position = enemyVectorPositions[i];
 		// Spirit->m_Size = playerSize; // por ahora le mandamos el mismo tamaño del jugador
 		Spirit->m_Size = enemySize; // por ahora le mandamos el mismo tamaño del jugador
 		Spirit->m_Velocity = glm::vec2(PLAYER_VELOCITY); // misma velocidad que el jugador
 		Spirit->m_Color = glm::vec3(1.0f); // a definir, podria cambiar el color de una textura de espiritu
+		Spirit->m_CellGrid.row = enemyCellPositions[i].x;
+		Spirit->m_CellGrid.col = enemyCellPositions[i].y;
 		m_Entities.push_back(Spirit);
 	}
 }

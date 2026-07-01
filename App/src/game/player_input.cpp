@@ -35,8 +35,8 @@ PlayerInputComponent::PlayerInputComponent(PlayerPhysicsComponent* physics)
 
 void PlayerInputComponent::Update(GameEntity& entity, World& world)
 {
-	entity.m_Velocity.x = 0;
-	entity.m_Velocity.y = 0;
+	// entity.m_Velocity.x = 0;
+	// entity.m_Velocity.y = 0;
 
 	const float deltaTime = Engine::Application::GetDeltaTime();
 
@@ -48,16 +48,15 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 			TargetCell targetTemp = {};
 			targetTemp.gridPosition = { entity.m_CellGrid.row, entity.m_CellGrid.col };
 			targetTemp.gridPosition.y -= 1;
-			GetMovementCells(world, targetTemp);
-			if (targetTemp.targetIDSelf == WALL) // tiene que validar la que tiene arriba
-			{
-				return;
-			}
 
 			if (targetTemp.gridPosition.y <= 0)
-			{
 				return;
-			}
+
+			GetMovementCells(world, targetTemp);
+
+			if (!targetTemp.isTarget)
+				return;
+
 			g_IsMoving = true;
 			g_Up = true;
 			g_Target = targetTemp;
@@ -68,17 +67,15 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 			TargetCell targetTemp = {};
 			targetTemp.gridPosition = { entity.m_CellGrid.row, entity.m_CellGrid.col };
 			targetTemp.gridPosition.x += 1;
-			GetMovementCells(world, targetTemp);
-
-			if (targetTemp.targetIDSelf == WALL) // tiene que validar la que tiene arriba
-			{
-				return;
-			}
 
 			if (targetTemp.gridPosition.x >= 13)
-			{
 				return;
-			}
+			
+			GetMovementCells(world, targetTemp);
+
+			if (!targetTemp.isTarget)
+				return;
+
 			g_IsMoving = true;
 			g_Right = true;
 			g_Target = targetTemp;
@@ -88,17 +85,15 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 			TargetCell targetTemp = {};
 			targetTemp.gridPosition = { entity.m_CellGrid.row, entity.m_CellGrid.col };
 			targetTemp.gridPosition.x -= 1;
-			GetMovementCells(world, targetTemp);
-
-			if (targetTemp.targetIDSelf == WALL) // tiene que validar la que tiene arriba
-			{
-				return;
-			}
 
 			if (g_Target.gridPosition.x <= 0)
-			{
 				return;
-			}
+
+			GetMovementCells(world, targetTemp);
+
+			if (!targetTemp.isTarget)
+				return;
+
 			g_IsMoving = true;
 			g_Left = true;
 			g_Target = targetTemp;
@@ -108,29 +103,27 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 			TargetCell targetTemp = {};
 			targetTemp.gridPosition = { entity.m_CellGrid.row, entity.m_CellGrid.col };
 			targetTemp.gridPosition.y += 1;
+
+			if (g_Target.gridPosition.y >= 15)
+				return;
+			
 			GetMovementCells(world, targetTemp);
 
-			if (targetTemp.targetIDSelf == WALL) // tiene que validar la que tiene arriba
-			{
+			if (!targetTemp.isTarget)
 				return;
-			}
 			
-			if (g_Target.gridPosition.y >= 15)
-			{
-				return;
-			}
 			g_IsMoving = true;
 			g_Down = true;
 			g_Target = targetTemp;
 		}
-		std::cout << "GRID ROW: "<<  g_Target.gridPosition.x << std::endl;
-		std::cout << "GRID COL: "<<  g_Target.gridPosition.y << std::endl;
+		//std::cout << "GRID ROW: "<<  g_Target.gridPosition.x << std::endl;
+		//std::cout << "GRID COL: "<<  g_Target.gridPosition.y << std::endl;
 	}
 
-	if (g_IsMoving && !g_Target.isTarget)
-	{
-		GetMovementCells(world, g_Target);
-	}
+	// if (g_IsMoving && !g_Target.isTarget)
+	// {
+	// 	GetMovementCells(world, g_Target);
+	// }
 
 	if (g_IsMoving)
 	{
@@ -202,7 +195,7 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 				}
 
 				g_firstClick = true;
-				// std::cout << "jugador toco la entidad: " << world.GetEntities()[i]->m_Id << std::endl;
+				std::cout << "jugador toco la entidad: " << world.GetEntities()[i]->m_Id << std::endl;
 			}
 		}
 	}
@@ -219,6 +212,9 @@ void PlayerInputComponent::SetDirection()
 
 void PlayerInputComponent::GetMovementCells(World& world, TargetCell& target)
 {
+	bool foundWalkable = false;
+	bool foundBlocker = false;
+
 	for (auto i = 0; i < world.GetEntities().size(); i++)
 	{
 		// identificar si es una tile
@@ -226,17 +222,24 @@ void PlayerInputComponent::GetMovementCells(World& world, TargetCell& target)
 		GameEntity* tile = world.GetEntities()[i];
 		int colPosition = target.gridPosition.y;
 		int rowPosition = target.gridPosition.x; // DA -128 int al llegar a fila 15 col 8 ( 17 en el valor, el dato esta mal, se suma 2 veces en algunas iteraciones al presionar el boton)
-		if (rowPosition == world.GetEntities()[i]->m_CellGrid.row
-			&& colPosition == world.GetEntities()[i]->m_CellGrid.col) // es una tile existente o caminable?
+		if (rowPosition == world.GetEntities()[i]->m_CellGrid.row && colPosition == world.GetEntities()[i]->m_CellGrid.col) // es una tile existente o caminable?
 		{
-			target.targetPosition = tile->m_Position;
-			target.targetSize = tile->m_Size;
-			target.targetCenter = tile->GetCenter(); // validar este calculo, que sea correcto
-			target.targetIDSelf = tile->m_Id;
-			target.isTarget = true;
-			break;
+			if (tile->m_Id == SPIRIT || tile->m_Id == WALL)
+			{
+				foundBlocker = true;
+			} else if (tile->m_Id == GRASS1)
+			{
+				target.targetPosition = tile->m_Position;
+				target.targetSize = tile->m_Size;
+				target.targetCenter = tile->GetCenter(); // validar este calculo, que sea correcto
+				target.targetIDSelf = tile->m_Id;
+				target.isTarget = true;
+				foundWalkable = true;
+			}
 		}
 	}
+
+	target.isTarget = foundWalkable && !foundBlocker;
 }
 
 void PlayerInputComponent::MoveGridPosition(GameEntity& entity, std::vector<GameEntity*> entities, int index)
