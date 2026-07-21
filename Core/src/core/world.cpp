@@ -160,7 +160,7 @@ void World::CreateItemEntity(unsigned int type, GameEntity* plantTileObjective)
 
 void World::AddEntity(GameEntity* entity)
 {
-	if (m_Entities == nullptr || entity == nullptr)
+	if (entity == nullptr)
 		return;
 
 	m_Entities.push_back(entity);
