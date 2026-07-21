@@ -30,6 +30,8 @@ class World
 		
 		void						AddEntity(GameEntity* entity);
 		void 						RenderWorld();
+
+		void						CreateItemEntity(unsigned int type, GameEntity* plantTileObjective);
 	public:
 		WorldLimits					GetWorldLimits() const { return m_WorldBounds; };
 
@@ -43,6 +45,8 @@ class World
 		std::vector <GameEntity*> 				m_GridTiles;	// todas las tiles del mundo, ej
 
 		WorldLimits								m_WorldBounds;
+
+		std::vector<GameEntity*>				m_PlayerInventoryVector;
 };
 
 #endif

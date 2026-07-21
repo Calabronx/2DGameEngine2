@@ -177,8 +177,6 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 				g_firstClick = true;
 				std::cout << "jugador toco la entidad: " << world.GetEntities()[i]->m_Id << std::endl;
 				// setear el item en esta tile
-				// world.GetEntities()[225]->m_Position = tile->m_Position;
-				// world.GetEntities()[225]->m_Size = tile->m_Size;
 				PlantItem(world, ITEM, tile);
 				//target.targetCenter = tile->GetCenter(); // validar este calculo, que sea correcto
 
@@ -242,14 +240,6 @@ void PlayerInputComponent::MoveGridPosition(GameEntity& entity, std::vector<Game
 
 void PlayerInputComponent::PlantItem(World& world, GameEntityType Itemtype, GameEntity* plantTileObjective)
 {
-	GameEntity* TorchItem = CreateItem();
-
-
-	TorchItem->m_Id = Itemtype;
-	TorchItem->m_Color = glm::vec3(1.f);
-	TorchItem->m_Position = plantTileObjective->m_Position;
-	TorchItem->m_Size = plantTileObjective->m_Size;
-
-	world->AddItem(TorchItem);
+	world.CreateItemEntity(Itemtype, plantTileObjective);
 }
 

@@ -145,17 +145,23 @@ void World::InitializeEntities()
 	}
 }
 
+void World::CreateItemEntity(unsigned int type, GameEntity* plantTileObjective)
+{
+	GameEntity* TorchItem = m_EntityFactory->CreateItem();
+
+	TorchItem->m_Id = type;
+	TorchItem->m_Color = glm::vec3(1.f);
+	TorchItem->m_Position = plantTileObjective->m_Position;
+	TorchItem->m_Size = plantTileObjective->m_Size;
+	AddEntity(TorchItem);
+
+	m_PlayerInventoryVector.push_back(TorchItem);
+}
+
 void World::AddEntity(GameEntity* entity)
 {
-	//if (m_Entities == nullptr)
-	//{
-	//	return;
-	//}
-
-	//if (entity == nullptr)
-	//{
-	//	return;
-	//}
+	if (m_Entities == nullptr || entity == nullptr)
+		return;
 
 	m_Entities.push_back(entity);
 }
