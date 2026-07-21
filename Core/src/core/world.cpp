@@ -97,12 +97,19 @@ void World::InitializeEntities()
 
 	m_Entities.push_back(Player);
 
+	GameEntity* TorchItem = m_EntityFactory->CreateItem();
+	TorchItem->m_Id = ITEM;
+	TorchItem->m_Color = glm::vec3(1.f);
+
+	m_Entities.push_back(TorchItem);
+
 	std::vector<glm::ivec2> enemyCellPositions = {
 		glm::vec2(5, 3),
 		glm::vec2(7, 3),
 		glm::vec2(5, 9),
 		glm::vec2(7, 10),
 		glm::vec2(6, 10),
+		glm::vec2(7, 10),
 	};
 
 	std::vector<glm::ivec2> enemyVectorPositions;

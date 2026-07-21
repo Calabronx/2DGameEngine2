@@ -18,6 +18,12 @@
 		uint32_t targetIDSelf;
 	};
 
+	struct PlayerInventory
+	{
+		std::vector<GameEntity*> Items;
+		std::size_t				 Size;
+	};
+
 	class PlayerInputComponent : public InputComponent
 	{
 		public:
@@ -29,11 +35,13 @@
 			void SetDirection();
 			void GetMovementCells(World& world, TargetCell& target);
 			void MoveGridPosition(GameEntity& entity, std::vector<GameEntity*> entities, int index);
+			void PlantItem(World& world, GameEntityType Itemtype, GameEntity* plantTileObjective);
 
 		private:
 			static const int WALK_ACCELERATION = 3;
 
 			PlayerPhysicsComponent* m_PlayerPhysics;
+			PlayerInventory			m_PlayerInventory;
 	};	
 #endif
 

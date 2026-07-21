@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -155,6 +155,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game\player_inventory.cpp" />
+    <ClCompile Include="src\game\item_graphics.cpp" />
+    <ClCompile Include="src\game\item_physics.cpp" />
+    <ClCompile Include="src\game\item_input.cpp" />
     <ClCompile Include="src\game\game_entity_factory.cpp" />
     <ClCompile Include="src\game\spirit_graphics.cpp" />
     <ClCompile Include="src\game\spirit_input.cpp" />
@@ -171,6 +175,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\player_inventory.h" />
+    <ClInclude Include="src\game\item_graphics.h" />
+    <ClInclude Include="src\game\item_physics.h" />
+    <ClInclude Include="src\game\item_input.h" />
     <ClInclude Include="src\game\game_entity_factory.h" />
     <ClInclude Include="src\game\spirit_graphics.h" />
     <ClInclude Include="src\game\spirit_input.h" />

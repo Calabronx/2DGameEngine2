@@ -14,7 +14,8 @@ enum GameEntityType
 	SPIRIT,
 	GRASS1,
 	GRASS2,
-	WALL
+	WALL,
+	ITEM
 };
 
 struct Cell

@@ -7,6 +7,7 @@ class IEntityFactory
 
 		virtual GameEntity* CreatePlayer() = 0;
 		virtual GameEntity* CreateEnemy() = 0;
+		virtual GameEntity* CreateItem() = 0;
 		
 		virtual ~IEntityFactory() = default;
 };

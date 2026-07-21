@@ -6,6 +6,7 @@
 #include <core/application.h>
 #include "core/world.h"
 #include <core/util.h>
+#include "game_entity_factory.h"
 
 namespace
 {
@@ -35,8 +36,6 @@ PlayerInputComponent::PlayerInputComponent(PlayerPhysicsComponent* physics)
 
 void PlayerInputComponent::Update(GameEntity& entity, World& world)
 {
-	// entity.m_Velocity.x = 0;
-	// entity.m_Velocity.y = 0;
 
 	const float deltaTime = Engine::Application::GetDeltaTime();
 
@@ -165,37 +164,25 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 		{
 			return;
 		}
-		// entity.m_Velocity.y += WALK_ACCELERATION * deltaTime;
-		// std::cout << "mouse moved or pressed "<< std::endl;
 		glm::vec2 cursorPos = Input::GetCursorPosition();
-		std::cout << "mouse x: " << cursorPos.x << " mouse y: " << cursorPos.y << std::endl;
+		//std::cout << "mouse x: " << cursorPos.x << " mouse y: " << cursorPos.y << std::endl;
 		bool clicked = false;
 		for (auto i = 0; i < world.GetEntities().size() && !g_firstClick; i++)
 		{
 			if (world.GetEntities()[i]->IsSelected(cursorPos)) // movimento del jugador en las tiles, deberia identificar si es una Tile real
 			{
-				std::cout << "tile id position : " << i << std::endl;
-				// glm::vec2 objective = world.GetEntities()[i]->GetCenter();
-				// entity.m_Position = objective - glm::vec2(entity.m_Size.x / 2.0f, entity.m_Size.y / 2.0f); // ubicar al jugador en el centro de la tile
-				if (g_tilePosition - 8 == i)
-				{
-					MoveGridPosition(entity, world.GetEntities(), g_tilePosition - 8);
-				}
-				else if (g_tilePosition + 8 == i)
-				{
-					MoveGridPosition(entity, world.GetEntities(), g_tilePosition + 8);
-				}
-				else if (g_tilePosition + 1 == i)
-				{
-					MoveGridPosition(entity, world.GetEntities(), g_tilePosition + 1);
-				}
-				else if (g_tilePosition - 1 == i)
-				{
-					MoveGridPosition(entity, world.GetEntities(), g_tilePosition - 1);
-				}
-
+				GameEntity* tile = world.GetEntities()[i];
+				int tileRow = world.GetEntities()[i]->m_CellGrid.row;
+				int tileCol = world.GetEntities()[i]->m_CellGrid.col;
 				g_firstClick = true;
 				std::cout << "jugador toco la entidad: " << world.GetEntities()[i]->m_Id << std::endl;
+				// setear el item en esta tile
+				// world.GetEntities()[225]->m_Position = tile->m_Position;
+				// world.GetEntities()[225]->m_Size = tile->m_Size;
+				PlantItem(world, ITEM, tile);
+				//target.targetCenter = tile->GetCenter(); // validar este calculo, que sea correcto
+
+
 			}
 		}
 	}
@@ -224,7 +211,7 @@ void PlayerInputComponent::GetMovementCells(World& world, TargetCell& target)
 		int rowPosition = target.gridPosition.x; // DA -128 int al llegar a fila 15 col 8 ( 17 en el valor, el dato esta mal, se suma 2 veces en algunas iteraciones al presionar el boton)
 		if (rowPosition == world.GetEntities()[i]->m_CellGrid.row && colPosition == world.GetEntities()[i]->m_CellGrid.col) // es una tile existente o caminable?
 		{
-			if (tile->m_Id == SPIRIT || tile->m_Id == WALL)
+			if (tile->m_Id == SPIRIT || tile->m_Id == WALL || tile->m_Id == ITEM)
 			{
 				foundBlocker = true;
 			} else if (tile->m_Id == GRASS1)
@@ -242,6 +229,7 @@ void PlayerInputComponent::GetMovementCells(World& world, TargetCell& target)
 	target.isTarget = foundWalkable && !foundBlocker;
 }
 
+// posible metodo para usar para plantar items en el mapa
 void PlayerInputComponent::MoveGridPosition(GameEntity& entity, std::vector<GameEntity*> entities, int index)
 {
 	if (index > entities.size() - 1)
@@ -250,5 +238,18 @@ void PlayerInputComponent::MoveGridPosition(GameEntity& entity, std::vector<Game
 	glm::vec2 centerTile = entities[index]->GetCenter();
 	g_tilePosition = index;
 	entity.m_Position = centerTile - glm::vec2(entity.m_Size.x / 2.0f, entity.m_Size.y / 2.0f);
+}
+
+void PlayerInputComponent::PlantItem(World& world, GameEntityType Itemtype, GameEntity* plantTileObjective)
+{
+	GameEntity* TorchItem = CreateItem();
+
+
+	TorchItem->m_Id = Itemtype;
+	TorchItem->m_Color = glm::vec3(1.f);
+	TorchItem->m_Position = plantTileObjective->m_Position;
+	TorchItem->m_Size = plantTileObjective->m_Size;
+
+	world->AddItem(TorchItem);
 }
 

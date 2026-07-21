@@ -6,5 +6,6 @@ class GameEntityFactory : public IEntityFactory
 	public:
 		GameEntity* CreatePlayer() override;
 		GameEntity* CreateEnemy() override;
+		GameEntity* CreateItem() override;
 };
 
