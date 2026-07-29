@@ -36,7 +36,6 @@ PlayerInputComponent::PlayerInputComponent(PlayerPhysicsComponent* physics)
 
 void PlayerInputComponent::Update(GameEntity& entity, World& world)
 {
-
 	const float deltaTime = Engine::Application::GetDeltaTime();
 
 	if (!g_IsMoving)
@@ -161,9 +160,8 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 	if (Input::IsMousePressed())
 	{
 		if (g_firstClick)
-		{
 			return;
-		}
+		
 		glm::vec2 cursorPos = Input::GetCursorPosition();
 		//std::cout << "mouse x: " << cursorPos.x << " mouse y: " << cursorPos.y << std::endl;
 		bool clicked = false;
@@ -172,15 +170,16 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 			if (world.GetEntities()[i]->IsSelected(cursorPos)) // movimento del jugador en las tiles, deberia identificar si es una Tile real
 			{
 				GameEntity* tile = world.GetEntities()[i];
+				if (world.GetEntities()[i]->m_Id == WALL || tile->m_IsTileNotPlantable) // hacer una funcion que valide si esta tile base tiene algun objeto
+				{
+					return;
+				}
 				int tileRow = world.GetEntities()[i]->m_CellGrid.row;
 				int tileCol = world.GetEntities()[i]->m_CellGrid.col;
 				g_firstClick = true;
 				std::cout << "jugador toco la entidad: " << world.GetEntities()[i]->m_Id << std::endl;
 				// setear el item en esta tile
 				PlantItem(world, ITEM, tile);
-				//target.targetCenter = tile->GetCenter(); // validar este calculo, que sea correcto
-
-
 			}
 		}
 	}
@@ -209,7 +208,7 @@ void PlayerInputComponent::GetMovementCells(World& world, TargetCell& target)
 		int rowPosition = target.gridPosition.x; // DA -128 int al llegar a fila 15 col 8 ( 17 en el valor, el dato esta mal, se suma 2 veces en algunas iteraciones al presionar el boton)
 		if (rowPosition == world.GetEntities()[i]->m_CellGrid.row && colPosition == world.GetEntities()[i]->m_CellGrid.col) // es una tile existente o caminable?
 		{
-			if (tile->m_Id == SPIRIT || tile->m_Id == WALL || tile->m_Id == ITEM)
+			if (tile->m_Id == SPIRIT || tile->m_Id == WALL || tile->m_IsTileNotPlantable) // faltaria validar al jugador
 			{
 				foundBlocker = true;
 			} else if (tile->m_Id == GRASS1)
@@ -240,6 +239,7 @@ void PlayerInputComponent::MoveGridPosition(GameEntity& entity, std::vector<Game
 
 void PlayerInputComponent::PlantItem(World& world, GameEntityType Itemtype, GameEntity* plantTileObjective)
 {
+	// deberia plantar items del array de inventario
 	world.CreateItemEntity(Itemtype, plantTileObjective);
 }
 

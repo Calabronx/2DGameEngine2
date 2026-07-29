@@ -17,6 +17,13 @@ struct WorldLimits
 	int height;
 };
 
+struct Item
+{
+	const std::string name;
+	Item(const std::string name_)
+		: name(name_) {}
+};
+
 class World
 {
 	public:
@@ -46,7 +53,8 @@ class World
 
 		WorldLimits								m_WorldBounds;
 
-		std::vector<GameEntity*>				m_PlayerInventoryVector;
+		std::vector<Item*>				m_PlayerInventoryVector;
+		int m_PlayerInventorySlots;
 };
 
 #endif

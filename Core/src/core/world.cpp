@@ -12,7 +12,7 @@ constexpr int INITIAL_ENEMY_Y_SIZE = 55;
 constexpr int PLAYER_VELOCITY = 0;
 constexpr int ROW_CENTER = 110;
 constexpr int COL_CENTER = 75;
-constexpr int WORLD_WIDTH = 800;  
+constexpr int WORLD_WIDTH = 800;
 constexpr int WORLD_HEIGHT = 600;
 
 constexpr int GRID_WIDTH = 13;
@@ -25,7 +25,7 @@ constexpr int GRID_HEIGHT = 15;
 
 World::World(IEntityFactory* factory)
 	: m_EntityFactory(factory)
-	
+
 {
 	glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
 	m_WorldBounds.bounds.x = 0.f;
@@ -36,22 +36,22 @@ World::World(IEntityFactory* factory)
 
 	// inicializo 8x8 grid del mundo
 	m_GameLevel = {
-	    {3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-	    {3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-	    {3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-	    {3,3,3,1,1,1,1,1,1,1,1,3,3,3},
-	    {3,3,3,1,3,3,1,1,3,3,1,3,3,3},
-	    {3,3,3,1,3,1,1,1,1,3,1,3,3,3},
-	    {3,3,3,1,3,1,1,1,1,3,1,3,3,3},
-	    {3,3,3,1,1,1,3,3,1,1,1,3,3,3},
-	    {3,3,3,1,3,1,3,3,1,3,1,3,3,3},
-	    {3,3,3,1,3,1,1,1,1,3,1,3,3,3},
-	    {3,3,3,1,3,3,1,1,3,3,1,3,3,3},
-	    {3,3,3,1,1,1,1,1,1,1,1,3,3,3},
-	    {3,3,3,1,1,1,1,1,1,1,1,3,3,3},
-	    {3,3,3,1,1,1,1,1,1,1,1,3,3,3},
-	    {3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-	    {3,3,3,3,3,3,3,3,3,3,3,3,3,3}
+		{3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+		{3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+		{3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+		{3,3,3,1,1,1,1,1,1,1,1,3,3,3},
+		{3,3,3,1,3,3,1,1,3,3,1,3,3,3},
+		{3,3,3,1,3,1,1,1,1,3,1,3,3,3},
+		{3,3,3,1,3,1,1,1,1,3,1,3,3,3},
+		{3,3,3,1,1,1,3,3,1,1,1,3,3,3},
+		{3,3,3,1,3,1,3,3,1,3,1,3,3,3},
+		{3,3,3,1,3,1,1,1,1,3,1,3,3,3},
+		{3,3,3,1,3,3,1,1,3,3,1,3,3,3},
+		{3,3,3,1,1,1,1,1,1,1,1,3,3,3},
+		{3,3,3,1,1,1,1,1,1,1,1,3,3,3},
+		{3,3,3,1,1,1,1,1,1,1,1,3,3,3},
+		{3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+		{3,3,3,3,3,3,3,3,3,3,3,3,3,3}
 	};
 
 	InitializeEntities();
@@ -70,32 +70,42 @@ void World::InitializeEntities()
 	GameEntity* Player = m_EntityFactory->CreatePlayer();
 
 	glm::vec2 playerPosition(INITIAL_X_POS, INITIAL_Y_POS);
-	glm::vec2 playerSize(INITIAL_PLAYER_X_SIZE,INITIAL_PLAYER_Y_SIZE);
-	glm::vec2 enemySize(INITIAL_ENEMY_X_SIZE,INITIAL_ENEMY_Y_SIZE);
+	glm::vec2 playerSize(INITIAL_PLAYER_X_SIZE, INITIAL_PLAYER_Y_SIZE);
+	glm::vec2 enemySize(INITIAL_ENEMY_X_SIZE, INITIAL_ENEMY_Y_SIZE);
 
 	Player->m_Id = PLAYER;
 	Player->m_Size = playerSize;
 	Player->m_CellGrid.row = INITIAL_X_POS;
 	Player->m_CellGrid.col = INITIAL_Y_POS;
 	Player->m_Position = m_Entities[m_GameLevel.size() / 2]->GetCenter() - glm::vec2(
-													Player->m_Size.x / 2.0f,
-													Player->m_Size.y / 2.0f); // ubicar al jugador en el centro de la tile
+		Player->m_Size.x / 2.0f,
+		Player->m_Size.y / 2.0f); // ubicar al jugador en el centro de la tile
 
 	for (auto i = 0; i < m_Entities.size(); i++)
 	{
-		if (m_Entities[i]->m_CellGrid.row == INITIAL_X_POS 
+		if (m_Entities[i]->m_CellGrid.row == INITIAL_X_POS
 			&& m_Entities[i]->m_CellGrid.col == INITIAL_Y_POS)
 		{
-			 Player->m_Position = m_Entities[i]->m_Position;
-			 break;
+			Player->m_Position = m_Entities[i]->m_Position;
+			break;
 		}
 	}
-	
+
 	Player->m_TileIndex = m_GameLevel.size() / 2;
 	Player->m_Velocity = glm::vec2(PLAYER_VELOCITY);
 	Player->m_Color = glm::vec3(1.0f);
 
 	m_Entities.push_back(Player);
+
+	Item* item1 = new Item("ANTORCHA");
+	Item* item2 = new Item("ANTORCHA");
+	Item* item3 = new Item("ANTORCHA");
+
+	m_PlayerInventoryVector.push_back(item1);
+	m_PlayerInventoryVector.push_back(item2);
+	m_PlayerInventoryVector.push_back(item3);
+
+	m_PlayerInventorySlots = m_PlayerInventoryVector.size();
 
 	GameEntity* TorchItem = m_EntityFactory->CreateItem();
 	TorchItem->m_Id = ITEM;
@@ -112,6 +122,7 @@ void World::InitializeEntities()
 		glm::vec2(7, 10),
 	};
 
+
 	std::vector<glm::ivec2> enemyVectorPositions;
 
 	for (int i = 0; i < enemyCellPositions.size(); ++i)
@@ -119,8 +130,9 @@ void World::InitializeEntities()
 		for (int j = 0; j < m_Entities.size(); ++j)
 		{
 			if (m_Entities[j]->m_Id == GRASS1 && m_Entities[j]->m_CellGrid.row == enemyCellPositions[i].x &&
-			 m_Entities[j]->m_CellGrid.col == enemyCellPositions[i].y)
+				m_Entities[j]->m_CellGrid.col == enemyCellPositions[i].y)
 			{
+				m_Entities[j]->m_IsTileNotPlantable = true;
 				enemyVectorPositions.push_back(m_Entities[j]->m_Position);
 				break;
 			}
@@ -147,6 +159,10 @@ void World::InitializeEntities()
 
 void World::CreateItemEntity(unsigned int type, GameEntity* plantTileObjective)
 {
+	// crear entidad con la data del item
+	if (m_PlayerInventorySlots == 0)
+		return;
+
 	GameEntity* TorchItem = m_EntityFactory->CreateItem();
 
 	TorchItem->m_Id = type;
@@ -155,7 +171,9 @@ void World::CreateItemEntity(unsigned int type, GameEntity* plantTileObjective)
 	TorchItem->m_Size = plantTileObjective->m_Size;
 	AddEntity(TorchItem);
 
-	m_PlayerInventoryVector.push_back(TorchItem);
+	plantTileObjective->m_IsTileNotPlantable = true;
+	m_PlayerInventorySlots--;
+	//m_PlayerInventoryVector.erase(m_PlayerInventoryVector.begin() + i);
 }
 
 void World::AddEntity(GameEntity* entity)

@@ -99,5 +99,4 @@ namespace Application
 	    glGetError();
 	}
 
-
 }
