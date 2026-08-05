@@ -3,6 +3,10 @@
 #include "data/entities/entity.h"
 #include "util.h"
 
+#include <iostream>
+#include <thread>
+#include <chrono>
+
 constexpr int INITIAL_X_POS = 8;
 constexpr int INITIAL_Y_POS = 7;
 constexpr int INITIAL_PLAYER_X_SIZE = 50;
@@ -97,21 +101,32 @@ void World::InitializeEntities()
 
 	m_Entities.push_back(Player);
 
-	Item* item1 = new Item("ANTORCHA");
-	Item* item2 = new Item("ANTORCHA");
-	Item* item3 = new Item("ANTORCHA");
+	GameEntity* TorchItem1 = m_EntityFactory->CreateItem();
 
-	m_PlayerInventoryVector.push_back(item1);
-	m_PlayerInventoryVector.push_back(item2);
-	m_PlayerInventoryVector.push_back(item3);
+	TorchItem1->m_Id = ITEM;
+	TorchItem1->m_Color = glm::vec3(1.f);
+	// TorchItem1->m_Position = plantTileObjective->m_Position;
+	// TorchItem1->m_Size = plantTileObjective->m_Size;
+
+	GameEntity* TorchItem2 = m_EntityFactory->CreateItem();
+
+	TorchItem2->m_Id = ITEM;
+	TorchItem2->m_Color = glm::vec3(1.f);
+	// TorchItem2->m_Position = plantTileObjective->m_Position;
+	// TorchItem2->m_Size = plantTileObjective->m_Size;
+
+	GameEntity* TorchItem3 = m_EntityFactory->CreateItem();
+
+	TorchItem3->m_Id = ITEM;
+	TorchItem3->m_Color = glm::vec3(1.f);
+	// TorchItem3->m_Position = plantTileObjective->m_Position;
+	// TorchItem3->m_Size = plantTileObjective->m_Size;
+
+	m_PlayerInventoryVector.push_back(TorchItem1);
+	m_PlayerInventoryVector.push_back(TorchItem2);
+	m_PlayerInventoryVector.push_back(TorchItem3);
 
 	m_PlayerInventorySlots = m_PlayerInventoryVector.size();
-
-	GameEntity* TorchItem = m_EntityFactory->CreateItem();
-	TorchItem->m_Id = ITEM;
-	TorchItem->m_Color = glm::vec3(1.f);
-
-	m_Entities.push_back(TorchItem);
 
 	std::vector<glm::ivec2> enemyCellPositions = {
 		glm::vec2(5, 3),
@@ -121,7 +136,6 @@ void World::InitializeEntities()
 		glm::vec2(6, 10),
 		glm::vec2(7, 10),
 	};
-
 
 	std::vector<glm::ivec2> enemyVectorPositions;
 
@@ -153,27 +167,65 @@ void World::InitializeEntities()
 		Spirit->m_Color = glm::vec3(1.0f); // a definir, podria cambiar el color de una textura de espiritu
 		Spirit->m_CellGrid.row = enemyCellPositions[i].x;
 		Spirit->m_CellGrid.col = enemyCellPositions[i].y;
-		m_Entities.push_back(Spirit);
+		AddEntity(Spirit);
 	}
 }
 
-void World::CreateItemEntity(unsigned int type, GameEntity* plantTileObjective)
+void World::Update()
 {
-	// crear entidad con la data del item
-	if (m_PlayerInventorySlots == 0)
+	// std::cout << "updating world!" << std::endl;
+	if (m_Entities.size() == 0)
 		return;
 
-	GameEntity* TorchItem = m_EntityFactory->CreateItem();
+	for (auto i = 0; i < m_Entities.size(); i++)
+	{
+		if (m_Entities[i]->m_Id == ITEM)
+		{
+			// if (m_Entities[i]->m_IsItemPlanted)
+			// {
+			// 	std::cout << "vela plantada, tiempo para que se apague de 5 segundos..\n";
+			// 	std::this_thread::sleep_for(std::chrono::seconds(5));
+			// 	std::cout << "vela apagada\n";
+			// 	RemoveEntity(m_Entities[i]);
+			// }
 
-	TorchItem->m_Id = type;
-	TorchItem->m_Color = glm::vec3(1.f);
-	TorchItem->m_Position = plantTileObjective->m_Position;
-	TorchItem->m_Size = plantTileObjective->m_Size;
-	AddEntity(TorchItem);
+			if (m_Entities[i]->m_IsItemPlanted)
+			{
+				auto start = std::chrono::steady_clock::now();
+				auto duration = std::chrono::seconds(5);
 
-	plantTileObjective->m_IsTileNotPlantable = true;
-	m_PlayerInventorySlots--;
-	//m_PlayerInventoryVector.erase(m_PlayerInventoryVector.begin() + i);
+				while (std::chrono::steady_clock::now() - start < duration)
+				{
+					std::cout << "vela plantada, tiempo para que se apague de 5 segundos..\n";
+				}
+				std::cout << "vela apagada\n";
+
+				RemoveEntity(m_Entities[i]);
+			}
+		}
+	}
+}
+
+void World::PlantItemInWorld(unsigned int type, GameEntity* plantTileObjective)
+{
+	// // crear entidad con la data del item
+	if (m_PlayerInventoryVector.size() == 0)
+		return;
+	// agrega el primer item del inventario al mundo, luego  elimina del inventario (no el puntero)
+	m_PlayerInventoryVector[0]->m_Position = plantTileObjective->m_Position;
+	m_PlayerInventoryVector[0]->m_Size = plantTileObjective->m_Size;
+	m_PlayerInventoryVector[0]->m_IsItemPlanted = true;
+
+	AddEntity(m_PlayerInventoryVector[0]);
+
+	m_PlayerInventoryVector.erase(m_PlayerInventoryVector.begin() + 0);
+
+	plantTileObjective->m_IsTileNotPlantable = true; // esto provoca bugs al eliminar enemigos o eliminar items
+}
+
+
+void World::RenderWorld()
+{
 }
 
 void World::AddEntity(GameEntity* entity)
@@ -183,3 +235,27 @@ void World::AddEntity(GameEntity* entity)
 
 	m_Entities.push_back(entity);
 }
+
+void World::AddItemToPlayerInventory(GameEntity* item)
+{
+	if (item == nullptr)
+		return;
+
+	m_PlayerInventoryVector.push_back(item);
+}
+
+void World::RemoveEntity(GameEntity* entity)
+{
+	if (entity == nullptr)
+		return;
+
+	auto it = std::find(m_Entities.begin(), m_Entities.end(), entity);
+
+	if (it != m_Entities.end())
+	{
+		delete *it;
+		m_Entities.erase(it);
+	}
+}
+
+

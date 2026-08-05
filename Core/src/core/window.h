@@ -1,6 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <glm/glm.hpp>
 #include <string>

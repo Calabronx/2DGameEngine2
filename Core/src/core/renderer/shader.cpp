@@ -21,7 +21,7 @@ namespace Renderer {
 		return contentStream.str();
 	}
 
-	uint32_t Renderer::CreateShader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
+	uint32_t CreateShader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
 	{
 		std::string vertexShaderSource = ReadTextFile(vertexPath);
 		std::string fragmentShaderSource = ReadTextFile(fragmentPath);

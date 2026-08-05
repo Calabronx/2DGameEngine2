@@ -170,12 +170,16 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 			if (world.GetEntities()[i]->IsSelected(cursorPos)) // movimento del jugador en las tiles, deberia identificar si es una Tile real
 			{
 				GameEntity* tile = world.GetEntities()[i];
-				if (world.GetEntities()[i]->m_Id == WALL || tile->m_IsTileNotPlantable) // hacer una funcion que valide si esta tile base tiene algun objeto
+				// falta validar correctamente la interaccion con las entidades del mundo, poder obtener su pointer
+				if (tile->m_Id == WALL || tile->m_IsTileNotPlantable) // hacer una funcion que valide si esta tile base tiene algun objeto
 				{
 					return;
+				} else if (tile->m_Id == ITEM)
+				{
+					std::cout << "ANTORCHA PRESIONADA! " << world.GetEntities()[i]->m_Id << std::endl;
+					return;
 				}
-				int tileRow = world.GetEntities()[i]->m_CellGrid.row;
-				int tileCol = world.GetEntities()[i]->m_CellGrid.col;
+
 				g_firstClick = true;
 				std::cout << "jugador toco la entidad: " << world.GetEntities()[i]->m_Id << std::endl;
 				// setear el item en esta tile
@@ -237,9 +241,15 @@ void PlayerInputComponent::MoveGridPosition(GameEntity& entity, std::vector<Game
 	entity.m_Position = centerTile - glm::vec2(entity.m_Size.x / 2.0f, entity.m_Size.y / 2.0f);
 }
 
-void PlayerInputComponent::PlantItem(World& world, GameEntityType Itemtype, GameEntity* plantTileObjective)
+void PlayerInputComponent::PlantItem(World& world, GameEntityType type, GameEntity* target)
 {
-	// deberia plantar items del array de inventario
-	world.CreateItemEntity(Itemtype, plantTileObjective);
+	world.PlantItemInWorld(type, target);
 }
+
+void PlayerInputComponent::RemoveItemFromGround(World& world, GameEntity* item)
+{
+	world.RemoveEntity(item);
+}
+
+
 

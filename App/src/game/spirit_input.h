@@ -4,6 +4,7 @@
 
 #include <core/input/input_component.h>
 #include <core/data/entities/entity.h>
+#include <core/world.h>
 
 class SpiritInputComponent : public InputComponent
 {

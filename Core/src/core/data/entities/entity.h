@@ -48,6 +48,7 @@ class GameEntity
 		glm::vec3 	m_Color;
 		float 		m_Rotation;
 		bool 		m_IsTileNotPlantable;
+		bool 		m_IsItemPlanted;
 	private:
 		bool m_Destroyed;
 

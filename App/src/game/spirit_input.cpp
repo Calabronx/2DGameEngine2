@@ -8,7 +8,8 @@ void SpiritInputComponent::Update(GameEntity& entity, World& world)
 	{
 		if(entity.IsSelected(Input::GetCursorPosition()))
 		{
-		   std::cout<< "Enemigo Fila :" << entity.m_CellGrid.row << " Columna : " <<  entity.m_CellGrid.col << std::endl;
+		   // std::cout<< "Enemigo Fila :" << entity.m_CellGrid.row << " Columna : " <<  entity.m_CellGrid.col << std::endl;
+			world.RemoveEntity(&entity);
 		}
 	}
 }

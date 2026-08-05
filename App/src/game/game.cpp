@@ -64,20 +64,27 @@ namespace Application
 
 		std::vector<GameEntity*> entities = m_GameWorld->GetEntities();
 
-	    for (auto i = 0; i < entities.size(); ++i)
-	    {	
+		for (auto i = 0; i < entities.size(); ++i)
+		{   
 			entities[i]->GetInput()->Update(*entities[i], *m_GameWorld);
-	    }
+		}
 
-	    for (auto i = 0; i < entities.size(); ++i)
-	    {
+		// Re-fetch entities after input updates because input handlers may remove
+		// entities from the world (which deletes pointers). Using a fresh list
+		// prevents processing dangling pointers in the physics step.
+		entities = m_GameWorld->GetEntities();
+
+		for (auto i = 0; i < entities.size(); ++i)
+		{
 			entities[i]->GetPhysics()->Update(*entities[i], *m_GameWorld);
-	    }
+		}
 
 	    if (Input::QuitRequested() || Input::IsKeyPressed(SDL_SCANCODE_ESCAPE))
 	    {
 	    	Engine::Application::GetInstance().Stop();
 	    }
+
+	    m_GameWorld->Update();
 	}
 
 	void Game::OnRender()

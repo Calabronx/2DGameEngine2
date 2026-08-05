@@ -17,13 +17,6 @@ struct WorldLimits
 	int height;
 };
 
-struct Item
-{
-	const std::string name;
-	Item(const std::string name_)
-		: name(name_) {}
-};
-
 class World
 {
 	public:
@@ -33,12 +26,16 @@ class World
 	private:
 		void 						InitializeEntities();
 	public:
+		void						Update();
+
 		std::vector <GameEntity*> 	GetEntities() { return m_Entities; };
 		
 		void						AddEntity(GameEntity* entity);
+		void 						AddItemToPlayerInventory(GameEntity* item);
+		void						RemoveEntity(GameEntity* entity);
 		void 						RenderWorld();
 
-		void						CreateItemEntity(unsigned int type, GameEntity* plantTileObjective);
+		void						PlantItemInWorld(unsigned int type, GameEntity* plantTileObjective);
 	public:
 		WorldLimits					GetWorldLimits() const { return m_WorldBounds; };
 
@@ -49,12 +46,12 @@ class World
 		Engine::TileManager 					*m_TileMap;
 		std::vector<std::vector<uint32_t>> 		m_GameLevel;// nivel o stage
 		std::vector <GameEntity*> 				m_Entities;	// todas las entidades del mundo
-		std::vector <GameEntity*> 				m_GridTiles;	// todas las tiles del mundo, ej
 
 		WorldLimits								m_WorldBounds;
 
-		std::vector<Item*>				m_PlayerInventoryVector;
+		std::vector<GameEntity*>				m_PlayerInventoryVector;
 		int m_PlayerInventorySlots;
+		std::string								m_EntityName; // capaz podria ser una descripcion de la entidad
 };
 
 #endif

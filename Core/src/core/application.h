@@ -1,6 +1,7 @@
 #ifndef ENGINE_APP_H
 #define ENGINE_APP_H
 
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <vector>
 #include <memory>

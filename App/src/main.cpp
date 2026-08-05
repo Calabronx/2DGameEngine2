@@ -6,6 +6,7 @@
 
 int main(int argc,  char* argv[])
 {
+    SDL_SetMainReady();
     Engine::ApplicationSpecification appSpec;
     // appSpec.Name = "TriangleRingApp";
     appSpec.Name = "Game";
