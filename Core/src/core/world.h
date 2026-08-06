@@ -51,7 +51,6 @@ class World
 
 		std::vector<GameEntity*>				m_PlayerInventoryVector;
 		int m_PlayerInventorySlots;
-		std::string								m_EntityName; // capaz podria ser una descripcion de la entidad
 };
 
 #endif

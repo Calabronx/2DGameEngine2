@@ -7,6 +7,9 @@
 #include "../../input/input_component.h"
 #include "../../physics.h"
 #include "../../renderer/graphics.h"
+#include <string>
+
+#include <chrono>
 
 enum GameEntityType
 {
@@ -48,9 +51,15 @@ class GameEntity
 		glm::vec3 	m_Color;
 		float 		m_Rotation;
 		bool 		m_IsTileNotPlantable;
-		bool 		m_IsItemPlanted;
+		std::chrono::steady_clock::time_point m_PlantedTime;
+		bool 			m_IsEntityPlanted;
+		bool 			m_TimerStarted;
+		std::string		m_EntityName; // capaz podria ser una descripcion de la entidad
+
+		GameEntity			*m_Tile;
 	private:
 		bool m_Destroyed;
+
 
 		InputComponent 		*m_Input;
 		PhysicsComponent	*m_Physics;

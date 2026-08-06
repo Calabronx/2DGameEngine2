@@ -171,7 +171,7 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 			{
 				GameEntity* tile = world.GetEntities()[i];
 				// falta validar correctamente la interaccion con las entidades del mundo, poder obtener su pointer
-				if (tile->m_Id == WALL || tile->m_IsTileNotPlantable) // hacer una funcion que valide si esta tile base tiene algun objeto
+				if (tile->m_Id == WALL || tile->m_IsEntityPlanted) // hacer una funcion que valide si esta tile base tiene algun objeto
 				{
 					return;
 				} else if (tile->m_Id == ITEM)
@@ -212,7 +212,7 @@ void PlayerInputComponent::GetMovementCells(World& world, TargetCell& target)
 		int rowPosition = target.gridPosition.x; // DA -128 int al llegar a fila 15 col 8 ( 17 en el valor, el dato esta mal, se suma 2 veces en algunas iteraciones al presionar el boton)
 		if (rowPosition == world.GetEntities()[i]->m_CellGrid.row && colPosition == world.GetEntities()[i]->m_CellGrid.col) // es una tile existente o caminable?
 		{
-			if (tile->m_Id == SPIRIT || tile->m_Id == WALL || tile->m_IsTileNotPlantable) // faltaria validar al jugador
+			if (tile->m_Id == SPIRIT || tile->m_Id == WALL || tile->m_IsEntityPlanted) // faltaria validar al jugador
 			{
 				foundBlocker = true;
 			} else if (tile->m_Id == GRASS1)
