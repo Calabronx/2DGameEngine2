@@ -182,6 +182,8 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 
 				g_firstClick = true;
 				std::cout << "jugador toco la entidad: " << world.GetEntities()[i]->m_Id << std::endl;
+				std::cout << "GRID ROW: "<<  world.GetEntities()[i]->m_CellGrid.row << std::endl;
+				std::cout << "GRID COL: "<<  world.GetEntities()[i]->m_CellGrid.col << std::endl;
 				// setear el item en esta tile
 				PlantItem(world, ITEM, tile);
 			}

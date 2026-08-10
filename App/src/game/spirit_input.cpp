@@ -13,4 +13,5 @@ void SpiritInputComponent::Update(GameEntity& entity, World& world)
 			world.RemoveEntity(&entity);
 		}
 	}
+
 }

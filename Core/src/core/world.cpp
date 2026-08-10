@@ -127,11 +127,11 @@ void World::InitializeEntities()
 	TorchItem5->m_Id = ITEM;
 	TorchItem5->m_Color = glm::vec3(1.f);
 
-	m_PlayerInventoryVector.push_back(TorchItem1);
-	m_PlayerInventoryVector.push_back(TorchItem2);
-	m_PlayerInventoryVector.push_back(TorchItem3);
-	m_PlayerInventoryVector.push_back(TorchItem4);
-	m_PlayerInventoryVector.push_back(TorchItem5);
+	AddItemToPlayerInventory(TorchItem1);
+	AddItemToPlayerInventory(TorchItem2);
+	AddItemToPlayerInventory(TorchItem3);
+	AddItemToPlayerInventory(TorchItem4);
+	AddItemToPlayerInventory(TorchItem5);
 
 	m_PlayerInventorySlots = m_PlayerInventoryVector.size();
 
@@ -169,7 +169,7 @@ void World::InitializeEntities()
 			if (m_Entities[j]->m_Id == GRASS1 && m_Entities[j]->m_CellGrid.row == enemyCellPositions[i].x &&
 				m_Entities[j]->m_CellGrid.col == enemyCellPositions[i].y)
 			{
-				Tile = m_Entities[i];
+				Tile = m_Entities[j];
 			}
 		}
 
@@ -235,6 +235,7 @@ void World::PlantItemInWorld(unsigned int type, GameEntity* plantTileObjective)
 	m_PlayerInventoryVector[0]->m_Position = plantTileObjective->m_Position;
 	m_PlayerInventoryVector[0]->m_Size = plantTileObjective->m_Size;
 	m_PlayerInventoryVector[0]->m_Tile = plantTileObjective;
+	m_PlayerInventoryVector[0]->m_CellGrid = plantTileObjective->m_CellGrid;
 	m_PlayerInventoryVector[0]->m_Tile->m_IsEntityPlanted = true;
 
 	AddEntity(m_PlayerInventoryVector[0]);
