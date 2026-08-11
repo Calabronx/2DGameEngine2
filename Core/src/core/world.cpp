@@ -177,6 +177,7 @@ void World::InitializeEntities()
 
 			Spirit->m_Id = SPIRIT;
 			Spirit->m_Position = enemyVectorPositions[i];
+			Spirit->m_EntityLifeCounter = 1200; // en realidad deberia tener 100 como max, iterar de manera mas pausada sacarle vida al espiritu
 			// Spirit->m_Size = playerSize; // por ahora le mandamos el mismo tamaño del jugador
 			Spirit->m_Size = enemySize; // por ahora le mandamos el mismo tamaño del jugador
 			Spirit->m_Velocity = glm::vec2(PLAYER_VELOCITY); // misma velocidad que el jugador

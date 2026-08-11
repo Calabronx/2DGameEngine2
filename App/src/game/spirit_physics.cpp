@@ -2,30 +2,24 @@
 
 void SpiritPhysicsComponent::Update(GameEntity& entity, World& world)
 {
-	for (auto i = 0; i < world.GetEntities().size(); i++)
+	for (auto* otherEntity : world.GetEntities())
 	{
-		
-		// if (world.GetEntities()[i]->m_Id == ITEM && entity.m_CellGrid.row == world.GetEntities()[i]->m_CellGrid.row 
-		// 	&& entity.m_CellGrid.col + 1 == world.GetEntities()[i]->m_CellGrid.col)
-		// {
-		// 	// VELA ESTA ABAJO EN LA COORDENADA, MORIR();
+		if (otherEntity->m_Id != ITEM)
+			continue;
 
-		// 		int d = 2;
-		// }
+		bool lightDown = otherEntity->m_CellGrid.col == entity.m_CellGrid.col + 1 && otherEntity->m_CellGrid.row == entity.m_CellGrid.row;
+		bool lightRight = otherEntity->m_CellGrid.col == entity.m_CellGrid.col && otherEntity->m_CellGrid.row == entity.m_CellGrid.row + 1;
+		bool lightUp = otherEntity->m_CellGrid.col == entity.m_CellGrid.col + 1 && otherEntity->m_CellGrid.row == entity.m_CellGrid.row + 1;
+		bool lightLeft = otherEntity->m_CellGrid.col == entity.m_CellGrid.col && otherEntity->m_CellGrid.row == entity.m_CellGrid.row + 1;
 
-		for (auto* otherEntity : world.GetEntities())
+		if (lightDown || lightRight || lightUp)
 		{
-			if (otherEntity->m_Id != ITEM)
-				continue;
-
-			bool sameColumn = otherEntity->m_CellGrid.col == entity.m_CellGrid.col;
-			bool lightDown = otherEntity->m_CellGrid.row == entity.m_CellGrid.row + 1;
-
-			if (sameColumn && lightDown)
+			entity.m_Tile->m_IsEntityPlanted = false;
+			entity.m_EntityLifeCounter--;
+			if (entity.m_EntityLifeCounter == 0)
 			{
 				world.RemoveEntity(&entity);
 			}
 		}
-
 	}
 }

@@ -35,6 +35,8 @@ class GameEntity
 		bool 					IsDestroyed() { return m_Destroyed; };
 		bool					IsSelected(glm::vec2 mousePos);
 
+		void					Destroy() { m_Destroyed = true; };
+
 		glm::vec2				GetCenter() const;
 
 		InputComponent* 		GetInput() { return m_Input; };
@@ -44,6 +46,7 @@ class GameEntity
 	public:
 		uint32_t	m_Id = 0;
 		int 		m_TileIndex;
+		int			m_EntityLifeCounter;
 		Cell		m_CellGrid;
 		glm::vec2 	m_Position;
 		glm::vec2 	m_Velocity;
@@ -59,7 +62,6 @@ class GameEntity
 		GameEntity			*m_Tile;
 	private:
 		bool m_Destroyed;
-
 
 		InputComponent 		*m_Input;
 		PhysicsComponent	*m_Physics;
