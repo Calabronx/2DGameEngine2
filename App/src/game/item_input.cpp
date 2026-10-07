@@ -6,7 +6,7 @@ ItemInputComponent::ItemInputComponent(ItemPhysicsComponent* physics)
 {
 }
 
-void ItemInputComponent::Update(GameEntity& entity, World& world)
+void ItemInputComponent::Update(GameEntity& entity, World& world, float ts)
 {
 	if (Input::IsMousePressed())
 	{

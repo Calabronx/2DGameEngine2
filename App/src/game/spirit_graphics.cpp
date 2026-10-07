@@ -9,10 +9,10 @@ SpiritGraphicsComponent::SpiritGraphicsComponent(SpiritPhysicsComponent* physics
 
 void SpiritGraphicsComponent::Update(GameEntity& entity, Renderer::SpriteRenderer& renderer)
 {
-	Renderer::Sprite* sprite = new Renderer::Sprite();
+	Renderer::Sprite* sprite = &m_Sprite;
 
 	//condiciones de estado
-	sprite = &m_Sprite;
+	// sprite = &m_Sprite;
 
 	renderer.RenderSprite(sprite->texture,
 	 					  entity.m_Position,

@@ -47,6 +47,8 @@ namespace Engine {
     {
         m_Running = true;
         float lastTime = GetTime();
+        float fps = 0.0f;
+        int frameCount = 0;
 
         while(m_Running)
         {
@@ -56,8 +58,17 @@ namespace Engine {
 
             float timestep = glm::clamp(currentTime - lastTime, 0.001f, 0.1f);
 
-            SetDeltaTime(timestep);
-            lastTime = currentTime; 
+            frameCount++;
+
+            if (delta >= 1000)
+            {
+                fps = frameCount / (delta / 1000.0f);
+                std::cout << "FPS: " << fps << " (Frames: " << frameCount << ")" << std::endl;
+
+                frameCount = 0;
+                lastTime = currentTime; 
+            }
+
 
             for (const std::unique_ptr<Layer>& layer : m_LayerStack)
             {
@@ -68,7 +79,6 @@ namespace Engine {
             {
                 layer->OnRender();
             }
-
 
             Update();
 
@@ -94,15 +104,5 @@ namespace Engine {
     float Application::GetTime()
     {
         return (float) SDL_GetTicks();
-    }
-
-    void Application::SetDeltaTime(float time)
-    {
-		s_DeltaTime = time;
-    }
-
-    float Application::GetDeltaTime()
-    {
-        return s_DeltaTime;
     }
 }

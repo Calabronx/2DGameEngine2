@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "core/application.h"
-// #include "apps/TriangleShader.h"
+#include "apps/TriangleShader.h"
 #include "game/game.h"
 
 int main(int argc,  char* argv[])
@@ -15,7 +15,7 @@ int main(int argc,  char* argv[])
 
     Engine::Application application(appSpec);
     application.PushLayer<Application::Game>();
-    //application.PushLayer<BallsAppLayer>();
+    // application.PushLayer<BallsAppLayer>();
     // application.PushLayer<TriangleShader>();
     application.Run();
 

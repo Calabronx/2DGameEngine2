@@ -22,6 +22,8 @@ constexpr int WORLD_HEIGHT = 600;
 constexpr int GRID_WIDTH = 13;
 constexpr int GRID_HEIGHT = 15;
 
+constexpr float TORCH_FIRE_TIME = 5.0f;
+
 
 // constexpr int WORLD_WIDTH = 800 + ROW_CENTER; // el tamaño del ancho mas el centrado de la fila de la grilla 
 // constexpr int WORLD_HEIGHT = 600 + COL_CENTER; // el tamaño del alto mas el centrado de la col de la grilla
@@ -31,45 +33,53 @@ World::World(IEntityFactory* factory)
 	: m_EntityFactory(factory)
 
 {
-	glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
+	glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize(); // window bounds
 	m_WorldBounds.bounds.x = 0.f;
 	m_WorldBounds.bounds.y = 0.f;
 	// m_WorldBounds.width = framebufferSize.x - 200; // posible side menu
-	m_WorldBounds.width = framebufferSize.x;
-	m_WorldBounds.height = framebufferSize.y;
+	m_WorldBounds.windowWidth = framebufferSize.x - 200; // window bounds
+	m_WorldBounds.windowHeight = framebufferSize.y; // window bounds
 
-	// inicializo 8x8 grid del mundo
+	// definir como manejar los datos de niveles de una mejor manera, puedo seguir la idea original de learnopeng
+	// que es hacerlo una clase y instanciar cada nivel, o convertirlo simplemente en un struct
 	m_GameLevel = {
-		{3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-		{3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-		{3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-		{3,3,3,1,1,1,1,1,1,1,1,3,3,3},
-		{3,3,3,1,3,3,1,1,3,3,1,3,3,3},
-		{3,3,3,1,3,1,1,1,1,3,1,3,3,3},
-		{3,3,3,1,3,1,1,1,1,3,1,3,3,3},
-		{3,3,3,1,1,1,3,3,1,1,1,3,3,3},
-		{3,3,3,1,3,1,3,3,1,3,1,3,3,3},
-		{3,3,3,1,3,1,1,1,1,3,1,3,3,3},
-		{3,3,3,1,3,3,1,1,3,3,1,3,3,3},
-		{3,3,3,1,1,1,1,1,1,1,1,3,3,3},
-		{3,3,3,1,1,1,1,1,1,1,1,3,3,3},
-		{3,3,3,1,1,1,1,1,1,1,1,3,3,3},
-		{3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-		{3,3,3,3,3,3,3,3,3,3,3,3,3,3}
+		{3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+		{3,1,1,1,3,1,1,1,1,1,1,1,1,1,3},
+		{3,1,3,3,3,1,3,1,3,2,3,2,3,1,3},
+		{3,1,1,1,1,1,1,1,1,1,1,1,1,1,3},
+		{3,1,3,3,3,1,3,1,3,1,3,1,3,1,3},
+		{3,1,1,1,1,1,1,1,1,1,1,1,1,1,3},
+		{3,1,3,1,3,1,3,1,3,1,3,3,3,1,3},
+		{3,1,1,1,1,1,1,1,1,1,1,1,1,1,3},
+		{3,1,3,1,3,1,3,1,3,1,3,1,3,1,3},
+		{3,1,1,1,1,1,1,1,1,1,1,1,1,1,3},
+		{3,3,3,1,3,1,3,1,3,1,3,1,3,1,3},
+		{3,1,1,1,1,1,1,1,1,3,1,1,1,1,3},
+		{3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
 	};
+
+	m_WorldBounds.col = m_GameLevel.size();
+	m_WorldBounds.row = m_GameLevel[m_GameLevel.size() - 1].size();
+
+	m_SpriteRenderer = std::make_shared<Renderer::SpriteRenderer>();
+
+	std::cout << "ROW GRID WORLD : " << m_WorldBounds.row << std::endl;
+	std::cout << "COL GRID WORLD : " << m_WorldBounds.col << std::endl;
+
 
 	InitializeEntities();
 }
 
 World::~World()
 {
+	std::cout << "~World()" << std::endl;
 }
 
 void World::InitializeEntities()
 {
 	glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
 	m_TileMap = new Engine::TileManager(&m_GameLevel);
-	m_Entities = m_TileMap->GenerateTileBoard(m_WorldBounds.width, m_WorldBounds.height);
+	m_Entities = m_TileMap->GenerateTileBoard(m_WorldBounds.windowWidth, m_WorldBounds.windowHeight);
 
 	GameEntity* Player = m_EntityFactory->CreatePlayer();
 
@@ -99,50 +109,25 @@ void World::InitializeEntities()
 	Player->m_Velocity = glm::vec2(PLAYER_VELOCITY);
 	Player->m_Color = glm::vec3(1.0f);
 
+	Player->m_EntityLifeCounter = 10;
+
 	m_Entities.push_back(Player);
 
-// items
-	GameEntity* TorchItem1 = m_EntityFactory->CreateItem();
-
-	TorchItem1->m_Id = ITEM;
-	TorchItem1->m_Color = glm::vec3(1.f);
-
-	GameEntity* TorchItem2 = m_EntityFactory->CreateItem();
-
-	TorchItem2->m_Id = ITEM;
-	TorchItem2->m_Color = glm::vec3(1.f);
-
-	GameEntity* TorchItem3 = m_EntityFactory->CreateItem();
-
-	TorchItem3->m_Id = ITEM;
-	TorchItem3->m_Color = glm::vec3(1.f);
-
-	GameEntity* TorchItem4 = m_EntityFactory->CreateItem();
-
-	TorchItem4->m_Id = ITEM;
-	TorchItem4->m_Color = glm::vec3(1.f);
-
-	GameEntity* TorchItem5 = m_EntityFactory->CreateItem();
-
-	TorchItem5->m_Id = ITEM;
-	TorchItem5->m_Color = glm::vec3(1.f);
-
-	AddItemToPlayerInventory(TorchItem1);
-	AddItemToPlayerInventory(TorchItem2);
-	AddItemToPlayerInventory(TorchItem3);
-	AddItemToPlayerInventory(TorchItem4);
-	AddItemToPlayerInventory(TorchItem5);
-
+	AddItemToPlayerInventoryWithQuantity(100);
+	
 	m_PlayerInventorySlots = m_PlayerInventoryVector.size();
 
 	std::vector<glm::ivec2> enemyCellPositions = {
 		glm::vec2(5, 3),
-		glm::vec2(7, 3),
-		glm::vec2(5, 9),
-		glm::vec2(7, 10),
-		glm::vec2(6, 10),
-		glm::vec2(7, 10),
+		glm::vec2(5, 4),
+		glm::vec2(5, 5),
+	
 	};
+
+	// std::vector<glm::ivec2> enemyCellPositions = {
+	// 	// glm::vec2(5, 3),
+	// 	glm::vec2(5, 4),
+	// };
 
 	std::vector<glm::ivec2> enemyVectorPositions;
 
@@ -151,9 +136,11 @@ void World::InitializeEntities()
 		for (int j = 0; j < m_Entities.size(); ++j)
 		{
 			if (m_Entities[j]->m_Id == GRASS1 && m_Entities[j]->m_CellGrid.row == enemyCellPositions[i].x &&
+				m_Entities[j]->m_CellGrid.col == enemyCellPositions[i].y 
+				|| m_Entities[j]->m_Id == WALL && m_Entities[j]->m_CellGrid.row == enemyCellPositions[i].x &&
 				m_Entities[j]->m_CellGrid.col == enemyCellPositions[i].y)
 			{
-				m_Entities[j]->m_IsEntityPlanted = true;
+				// m_Entities[j]->m_IsEntityPlanted = true;
 				enemyVectorPositions.push_back(m_Entities[j]->m_Position);
 				break;
 			}
@@ -167,6 +154,8 @@ void World::InitializeEntities()
 		GameEntity* Tile = nullptr;
 		for (int j = 0; j < m_Entities.size(); ++j) {
 			if (m_Entities[j]->m_Id == GRASS1 && m_Entities[j]->m_CellGrid.row == enemyCellPositions[i].x &&
+				m_Entities[j]->m_CellGrid.col == enemyCellPositions[i].y ||
+				m_Entities[j]->m_Id == WALL && m_Entities[j]->m_CellGrid.row == enemyCellPositions[i].x &&
 				m_Entities[j]->m_CellGrid.col == enemyCellPositions[i].y)
 			{
 				Tile = m_Entities[j];
@@ -185,15 +174,27 @@ void World::InitializeEntities()
 			Spirit->m_Tile = Tile;
 			Spirit->m_CellGrid.row = enemyCellPositions[i].x;
 			Spirit->m_CellGrid.col = enemyCellPositions[i].y;
+
+			
 			AddEntity(Spirit);
 	}
 }
 
-void World::Update()
+void World::Update(float ts)
 {
 	// std::cout << "updating world!" << std::endl;
 	if (m_Entities.size() == 0)
 		return;
+
+	for (auto i = 0; i < m_Entities.size(); ++i)
+	{   
+		m_Entities[i]->GetInput()->Update(*m_Entities[i], *this, ts);
+	}
+
+	for (auto i = 0; i < m_Entities.size(); ++i)
+	{
+		m_Entities[i]->GetPhysics()->Update(*m_Entities[i], *this);
+	}
 
 	std::vector<GameEntity*> EntitiesToDelete;
 
@@ -201,22 +202,22 @@ void World::Update()
 	{
 		if (m_Entities[i]->m_Id == ITEM && m_Entities[i]->m_Tile->m_IsEntityPlanted)
 		{
-				if (!m_Entities[i]->m_TimerStarted)
-				{
-					m_Entities[i]->m_PlantedTime = std::chrono::steady_clock::now();
-					m_Entities[i]->m_TimerStarted = true;
-					std::cout << "vela plantada, tiempo para que se apague de 5 segundos..\n";
-				}
+			if (!m_Entities[i]->m_TimerStarted)
+			{
+				m_Entities[i]->m_PlantedTime = std::chrono::steady_clock::now();
+				m_Entities[i]->m_TimerStarted = true;
+				std::cout << "vela plantada, tiempo para que se apague de 5 segundos..\n";
+			}
 
-					auto now = std::chrono::steady_clock::now();
-					auto timePassed = std::chrono::duration<double>(now - m_Entities[i]->m_PlantedTime).count();
+			auto now = std::chrono::steady_clock::now();
+			auto timePassed = std::chrono::duration<double>(now - m_Entities[i]->m_PlantedTime).count();
 
-					if (timePassed >= 5.0)
-					{
-						std::cout << "vela apagada\n";
-						EntitiesToDelete.push_back(m_Entities[i]);
-						m_Entities[i]->m_Tile->m_IsEntityPlanted = false;
-					}
+			if (timePassed >= TORCH_FIRE_TIME)
+			{
+				std::cout << "vela apagada\n";
+				EntitiesToDelete.push_back(m_Entities[i]);
+				m_Entities[i]->m_Tile->m_IsEntityPlanted = false;
+			}
 		}
 	}
 
@@ -226,7 +227,7 @@ void World::Update()
 	}
 }
 
-void World::PlantItemInWorld(unsigned int type, GameEntity* plantTileObjective)
+void World::PlantItemInWorld(unsigned int type, GameEntity* plantTileObjective, int index)
 {
 	// // crear entidad con la data del item
 	if (m_PlayerInventoryVector.size() == 0)
@@ -240,6 +241,16 @@ void World::PlantItemInWorld(unsigned int type, GameEntity* plantTileObjective)
 	m_PlayerInventoryVector[0]->m_Tile->m_IsEntityPlanted = true;
 
 	AddEntity(m_PlayerInventoryVector[0]);
+	std::cout << "index ! " << index << std::endl;
+	// peligrosoooooo
+
+	assert(m_Entities.size() != 0);
+
+	m_Entities[index]->m_Color = glm::vec3(1.0f, 1.0f, 0.0f);
+	m_Entities[index - 1]->m_Color = glm::vec3(1.0f, 1.0f, 0.0f);
+	m_Entities[index + 1]->m_Color = glm::vec3(1.0f, 1.0f, 0.0f);
+	m_Entities[index + 15]->m_Color = glm::vec3(1.0f, 1.0f, 0.0f);
+	m_Entities[index - 15]->m_Color = glm::vec3(1.0f, 1.0f, 0.0f);
 
 	m_PlayerInventoryVector.erase(m_PlayerInventoryVector.begin() + 0);
 }
@@ -247,6 +258,10 @@ void World::PlantItemInWorld(unsigned int type, GameEntity* plantTileObjective)
 
 void World::RenderWorld()
 {
+	for (auto i = 0; i < m_Entities.size(); ++i)
+	{
+		m_Entities[i]->GetGraphics()->Update(*m_Entities[i], *m_SpriteRenderer);
+	}
 }
 
 void World::AddEntity(GameEntity* entity)
@@ -263,6 +278,23 @@ void World::AddItemToPlayerInventory(GameEntity* item)
 		return;
 
 	m_PlayerInventoryVector.push_back(item);
+
+}
+
+// void World::AddItemToPlayerInventoryWithQuantity(GameEntity* item, std::size_t quantity)
+void World::AddItemToPlayerInventoryWithQuantity(std::size_t quantity)
+{
+	if (quantity == 0)
+		return;
+
+	for (std::size_t i = 0; i < quantity; ++i)
+	{
+		GameEntity* TorchItem = m_EntityFactory->CreateItem();
+		assert(TorchItem != nullptr);
+		TorchItem->m_Id = ITEM;
+		TorchItem->m_Color = glm::vec3(1.f);
+		m_PlayerInventoryVector.push_back(TorchItem);
+	}
 }
 
 void World::RemoveEntity(GameEntity* entity)

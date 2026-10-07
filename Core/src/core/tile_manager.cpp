@@ -49,7 +49,7 @@ namespace Engine {
 
 					if (tileLevelData[col][row] == 1)
 					{
-						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/grass_2.png"));
+						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/block.png"));
 						entityTile->m_Id = GRASS1;
 						entityTile->m_CellGrid.row = row;
 						entityTile->m_CellGrid.col = col;
@@ -69,15 +69,27 @@ namespace Engine {
 						entityTile->m_Color = color;
 
 						tilesEntities.push_back(entityTile);
-					} else {
-						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/grass_1.png"));
-						entityTile->m_Id = GRASS2;
+					} else if (tileLevelData[col][row] == 2){
+						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/cross1.png"));
+						entityTile->m_Id = CROSS;
 						entityTile->m_CellGrid.row = row;
 						entityTile->m_CellGrid.col = col;
 						entityTile->m_TileIndex = col;
 						entityTile->m_Position = pos;
 						entityTile->m_Size = size;
 						entityTile->m_Color = color;
+
+						tilesEntities.push_back(entityTile);
+					} else {
+						// GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/grass_1.png"));
+						GameEntity* entityTile = CreateTile(Renderer::LoadTexture("textures/block.png"));
+						entityTile->m_Id = GRASS2;
+						entityTile->m_CellGrid.row = row;
+						entityTile->m_CellGrid.col = col;
+						entityTile->m_TileIndex = col;
+						entityTile->m_Position = pos;
+						entityTile->m_Size = size;
+						entityTile->m_Color = glm::vec3(1.0f, 1.0f, 0.0f);
 
 						tilesEntities.push_back(entityTile);
 					}

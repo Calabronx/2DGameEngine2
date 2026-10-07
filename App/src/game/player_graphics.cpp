@@ -11,7 +11,7 @@ PlayerGraphicsComponent::PlayerGraphicsComponent(PlayerPhysicsComponent* physics
 
 void PlayerGraphicsComponent::Update(GameEntity& entity, Renderer::SpriteRenderer& renderer)
 {
-	Renderer::Sprite* sprite = new Renderer::Sprite();
+	Renderer::Sprite* sprite = &m_SpriteIdle;
 	if (m_PlayerPhysics->IsWalkingUpDirection())
 	{
 		sprite = &m_SpriteWalkUp;

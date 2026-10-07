@@ -10,12 +10,9 @@ class ItemInputComponent : public InputComponent
 {
 	public:
 			ItemInputComponent(ItemPhysicsComponent* physics);
-			virtual void Update(GameEntity& entity, World& world);
-
-			void PlantItem(World& world);
+			virtual void Update(GameEntity& entity, World& world, float ts);
 
 		private:
-
 			ItemPhysicsComponent* m_ItemPhysics;
 };
 

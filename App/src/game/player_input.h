@@ -28,17 +28,17 @@
 	{
 		public:
 			PlayerInputComponent(PlayerPhysicsComponent* physics);
-			virtual void Update(GameEntity& entity, World& world);
+			virtual void Update(GameEntity& entity, World& world, float ts);
 
 			// void 		 MovePlayer(GameEntity& entity, glm::vec2 position);
 			void SetDirection();
 			void GetMovementCells(World& world, TargetCell& target);
 			void MoveGridPosition(GameEntity& entity, std::vector<GameEntity*> entities, int index);
-			void PlantItem(World& world, GameEntityType Itemtype, GameEntity* plantTileObjective);
+			void PlantItem(World& world, GameEntityType Itemtype, GameEntity* plantTileObjective, int index);
 			void RemoveItemFromGround(World& world, GameEntity* item);
 
 		private:
-			static const int WALK_ACCELERATION = 3;
+			static const int WALK_ACCELERATION = 1;
 
 			PlayerPhysicsComponent* m_PlayerPhysics;
 			PlayerInventory			m_PlayerInventory;

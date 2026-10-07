@@ -18,7 +18,9 @@ enum GameEntityType
 	GRASS1,
 	GRASS2,
 	WALL,
-	ITEM
+	ITEM,
+	CROSS,
+	GRAVE
 };
 
 struct Cell
@@ -30,7 +32,7 @@ class GameEntity
 {
 	public:
 								GameEntity(InputComponent* input, PhysicsComponent* physics, GraphicsComponent *graphics);
-		 						~GameEntity() {}
+		 						~GameEntity();
 
 		bool 					IsDestroyed() { return m_Destroyed; };
 		bool					IsSelected(glm::vec2 mousePos);
@@ -57,7 +59,6 @@ class GameEntity
 		std::chrono::steady_clock::time_point m_PlantedTime;
 		bool 			m_IsEntityPlanted;
 		bool 			m_TimerStarted;
-		std::string		m_EntityName; // capaz podria ser una descripcion de la entidad
 
 		GameEntity			*m_Tile;
 	private:

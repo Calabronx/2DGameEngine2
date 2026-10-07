@@ -11,14 +11,23 @@
 namespace
 {
 	int g_tilePosition = 0;
+    int g_plantedCount = 0;
+    int g_tilesCollisionIndex = 0;
 
 	bool g_firstClick = false;
+	bool g_firstSpaceKey = false;
 	bool g_IsMoving = false;
 	bool g_Up = false;
 	bool g_Down = false;
 	bool g_Right = false;
 	bool g_Left = false;
 	bool g_Arrived = false;
+	bool g_plantItem = false;
+	bool g_PlantTimerStarted = false;
+
+    const int MAX_PLANTED_COUNT = 1;
+    // const int MAX_PLANTED_COUNT = 3;
+	std::chrono::steady_clock::time_point g_PlantedTime;
 
 	TargetCell g_Target;
 };
@@ -29,14 +38,31 @@ PlayerInputComponent::PlayerInputComponent(PlayerPhysicsComponent* physics)
 	// inicializar esto correctamente una sola vez, con la posicion inicial del jugador
 	// en el constructor
 	// Esto tiene que venir de una constante, no harcodeado, cambiar
-	g_Target.gridPosition.x = 8; 
-	g_Target.gridPosition.y = 7;
+	// g_Target.gridPosition.x = 8; 
+	// g_Target.gridPosition.y = 7;
 
 }
 
-void PlayerInputComponent::Update(GameEntity& entity, World& world)
+void PlayerInputComponent::Update(GameEntity& entity, World& world, float ts)
 {
-	const float deltaTime = Engine::Application::GetDeltaTime();
+	for (auto* otherEntity : world.GetEntities())
+	{
+		if (otherEntity->m_Id != SPIRIT)
+			continue;
+
+		// bool collision = entity.IsSelected(otherEntity->m_Position);
+		bool collision = otherEntity->m_CellGrid.row == entity.m_CellGrid.row && otherEntity->m_CellGrid.col == entity.m_CellGrid.col;
+
+		if (collision)
+		{
+			// entity.m_EntityLifeCounter--;
+			// if (entity.m_EntityLifeCounter <= 0)
+			// {
+			world.RemoveEntity(&entity);
+			// }
+		}
+	}
+
 
 	if (!g_IsMoving)
 	{
@@ -66,7 +92,7 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 			targetTemp.gridPosition = { entity.m_CellGrid.row, entity.m_CellGrid.col };
 			targetTemp.gridPosition.x += 1;
 
-			if (targetTemp.gridPosition.x >= 13)
+			if (targetTemp.gridPosition.x >= world.GetWorldLimits().row)
 				return;
 			
 			GetMovementCells(world, targetTemp);
@@ -102,7 +128,7 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 			targetTemp.gridPosition = { entity.m_CellGrid.row, entity.m_CellGrid.col };
 			targetTemp.gridPosition.y += 1;
 
-			if (g_Target.gridPosition.y >= 15)
+			if (g_Target.gridPosition.y >= world.GetWorldLimits().col)
 				return;
 			
 			GetMovementCells(world, targetTemp);
@@ -117,11 +143,6 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 		//std::cout << "GRID ROW: "<<  g_Target.gridPosition.x << std::endl;
 		//std::cout << "GRID COL: "<<  g_Target.gridPosition.y << std::endl;
 	}
-
-	// if (g_IsMoving && !g_Target.isTarget)
-	// {
-	// 	GetMovementCells(world, g_Target);
-	// }
 
 	if (g_IsMoving)
 	{
@@ -153,10 +174,11 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 
 		glm::vec2 direction = toTarget / distance;
 
-		entity.m_Velocity.x = direction.x * WALK_ACCELERATION * deltaTime;
-		entity.m_Velocity.y = direction.y * WALK_ACCELERATION * deltaTime;
+		entity.m_Velocity.x = direction.x * WALK_ACCELERATION * ts;
+		entity.m_Velocity.y = direction.y * WALK_ACCELERATION * ts;
 	}
 
+//  plant with mouse input on cell
 	if (Input::IsMousePressed())
 	{
 		if (g_firstClick)
@@ -185,13 +207,79 @@ void PlayerInputComponent::Update(GameEntity& entity, World& world)
 				std::cout << "GRID ROW: "<<  world.GetEntities()[i]->m_CellGrid.row << std::endl;
 				std::cout << "GRID COL: "<<  world.GetEntities()[i]->m_CellGrid.col << std::endl;
 				// setear el item en esta tile
-				PlantItem(world, ITEM, tile);
+				PlantItem(world, ITEM, tile, i);
 			}
 		}
 	}
 	else
 	{
 		g_firstClick = false;
+	}
+
+        if(g_plantItem && g_plantedCount == MAX_PLANTED_COUNT)
+        {
+    		if (!g_PlantTimerStarted)
+    		{
+    			g_PlantedTime = std::chrono::steady_clock::now();
+    			g_PlantTimerStarted = true;
+    		}
+
+    		auto now = std::chrono::steady_clock::now();
+    		auto timePassed = std::chrono::duration<double>(now - g_PlantedTime).count();
+
+    		if (timePassed < 5.0f)
+    		{
+    			return;
+    		} else {
+                // reset timer of planting
+                g_PlantedTime = std::chrono::steady_clock::now();
+                g_plantedCount = 0;
+                g_plantItem = false;
+                world.GetEntities()[g_tilesCollisionIndex]->m_Color = glm::vec3(1.0f);
+                world.GetEntities()[g_tilesCollisionIndex - 1]->m_Color = glm::vec3(1.0f);
+                world.GetEntities()[g_tilesCollisionIndex + 1]->m_Color = glm::vec3(1.0f);
+                world.GetEntities()[g_tilesCollisionIndex + 15]->m_Color = glm::vec3(1.0f);
+                world.GetEntities()[g_tilesCollisionIndex - 15]->m_Color = glm::vec3(1.0f);
+
+               	// g_tilesCollisionIndex = 0; 
+            }
+        }
+	//  PLANTAR CON BARRA ESPACIADORA TIPO BOMBERMAN
+	if (Input::IsKeyPressed(SDL_SCANCODE_SPACE))
+	{
+		if (g_firstSpaceKey)
+			return;
+
+		// g_Target.targetCenter - glm::vec2(entity.m_Size.x / 2.0f, entity.m_Size.y / 2.0f);
+		glm::vec2 plantPosition = entity.m_Position;
+		//std::cout << "mouse x: " << cursorPos.x << " mouse y: " << cursorPos.y << std::endl;
+		bool clicked = false;
+		for (auto i = 0; i < world.GetEntities().size() && !g_firstSpaceKey; i++)
+		{
+			if (world.GetEntities()[i]->IsSelected(plantPosition)) // movimento del jugador en las tiles, deberia identificar si es una Tile real
+			{
+				GameEntity* tile = world.GetEntities()[i];
+				// falta validar correctamente la interaccion con las entidades del mundo, poder obtener su pointer
+				if (tile->m_Id == WALL || tile->m_IsEntityPlanted) // hacer una funcion que valide si esta tile base tiene algun objeto
+				{
+					return;
+				} else if (tile->m_Id == ITEM)
+				{
+					std::cout << "ANTORCHA PRESIONADA! " << world.GetEntities()[i]->m_Id << std::endl;
+					return;
+				}
+
+				g_firstSpaceKey = true;
+				std::cout << "jugador toco la entidad: " << world.GetEntities()[i]->m_Id << std::endl;
+				std::cout << "GRID ROW: "<<  world.GetEntities()[i]->m_CellGrid.row << std::endl;
+				std::cout << "GRID COL: "<<  world.GetEntities()[i]->m_CellGrid.col << std::endl;
+				// setear el item en esta tile
+				PlantItem(world, ITEM, tile ,i);
+				g_tilesCollisionIndex = i;
+			}
+		}
+	} else {
+		g_firstSpaceKey = false;
 	}
 	// std::cout << "velocity player X: " << entity.m_Velocity.x << " Y: " << entity.m_Velocity.y << " " << std::endl;
 }
@@ -214,7 +302,7 @@ void PlayerInputComponent::GetMovementCells(World& world, TargetCell& target)
 		int rowPosition = target.gridPosition.x; // DA -128 int al llegar a fila 15 col 8 ( 17 en el valor, el dato esta mal, se suma 2 veces en algunas iteraciones al presionar el boton)
 		if (rowPosition == world.GetEntities()[i]->m_CellGrid.row && colPosition == world.GetEntities()[i]->m_CellGrid.col) // es una tile existente o caminable?
 		{
-			if (tile->m_Id == SPIRIT || tile->m_Id == WALL || tile->m_IsEntityPlanted) // faltaria validar al jugador
+			if (tile->m_Id == WALL || tile->m_IsEntityPlanted) // faltaria validar al jugador
 			{
 				foundBlocker = true;
 			} else if (tile->m_Id == GRASS1)
@@ -243,9 +331,11 @@ void PlayerInputComponent::MoveGridPosition(GameEntity& entity, std::vector<Game
 	entity.m_Position = centerTile - glm::vec2(entity.m_Size.x / 2.0f, entity.m_Size.y / 2.0f);
 }
 
-void PlayerInputComponent::PlantItem(World& world, GameEntityType type, GameEntity* target)
+void PlayerInputComponent::PlantItem(World& world, GameEntityType type, GameEntity* target, int index)
 {
-	world.PlantItemInWorld(type, target);
+    g_plantItem = true;
+    g_plantedCount++;
+	world.PlantItemInWorld(type, target, index);
 }
 
 void PlayerInputComponent::RemoveItemFromGround(World& world, GameEntity* item)

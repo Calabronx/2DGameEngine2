@@ -213,3 +213,14 @@ Fin
 
 1.8) Graficos
 El juego sera un TOP Down 2D con sprites,el motor usara tiles para armar los niveles, utilizare OpenGl como la especificacion principal para renderizar las texturas,colores y los shaders
+
+
+
+// necesito volver a escribir en este doc las ideas, simplemente sentarme y pensar un rato y hasta alejarme de la pantalla, volver y anotar y asi
+
+// una idea de un juego con el "motor" actual, los enemigos van pintando cada celda con un color propio de ellos, el jugador debe ir pintando las celdas convenientes para no dejarse opacar por los enemigos que son (gusanos, que pintan y chorean)
+quizas una tematica de robar la bandera del jugador, pero pintando casillas
+el mapa tiene una especie de laberinto con bloqueos y trampas
+el jugador puede morir por las trampas o perder el juego si los gusanos pintan la gran parte del mapa
+el jugador debe pintar las suficientes celdas volviendo a la base para recargar el pincel
+la ia de los gusanos hace lo mismo, deben volver a cargar el pincel con pintura(pero son muchos)

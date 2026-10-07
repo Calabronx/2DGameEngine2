@@ -8,6 +8,13 @@ GameEntity::GameEntity(InputComponent* input, PhysicsComponent* physics, Graphic
 {
 }
 
+GameEntity::~GameEntity()
+{
+	if (m_Input) delete m_Input; m_Input = nullptr;
+	if (m_Graphics) delete m_Graphics; m_Graphics = nullptr;
+	if (m_Physics) delete m_Physics; m_Physics = nullptr;
+}
+
 bool GameEntity::IsSelected(glm::vec2 mousePos)
 {
 	float x = m_Position.x;

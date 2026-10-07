@@ -6,7 +6,7 @@
 class TileInputComponent : public InputComponent
 {
 	public:
-		void Update(GameEntity& entity, World& world);
+		void Update(GameEntity& entity, World& world, float ts);
 };
 
 #endif

@@ -33,7 +33,6 @@ namespace Application
 	Game::Game()
 	{
 		// m_BackgroundTexture = Renderer::LoadTexture("textures/grid.png");
-	    m_SpriteRenderer = std::make_shared<Renderer::SpriteRenderer>();
 
 	    glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
 	    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(framebufferSize.x), static_cast<float>(framebufferSize.y), 0.0f, -1.0f, 1.0f);
@@ -62,46 +61,22 @@ namespace Application
 	{
 	    Input::Update();
 
-		std::vector<GameEntity*> entities = m_GameWorld->GetEntities();
-
-		for (auto i = 0; i < entities.size(); ++i)
-		{   
-			entities[i]->GetInput()->Update(*entities[i], *m_GameWorld);
-		}
-
-		// Re-fetch entities after input updates because input handlers may remove
-		// entities from the world (which deletes pointers). Using a fresh list
-		// prevents processing dangling pointers in the physics step.
-		entities = m_GameWorld->GetEntities();
-
-		for (auto i = 0; i < entities.size(); ++i)
-		{
-			entities[i]->GetPhysics()->Update(*entities[i], *m_GameWorld);
-		}
+	    m_GameWorld->Update(ts);
 
 	    if (Input::QuitRequested() || Input::IsKeyPressed(SDL_SCANCODE_ESCAPE))
 	    {
 	    	Engine::Application::GetInstance().Stop();
 	    }
-
-	    m_GameWorld->Update();
 	}
 
 	void Game::OnRender()
 	{	
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	    // m_SpriteRenderer->RenderSprite(m_BackgroundTexture, glm::vec2(0.0f, 0.0f), glm::vec2(framebufferSize.x, framebufferSize.y), 0.0f);
+		m_GameWorld->RenderWorld();
 
 	    glm::vec2 framebufferSize = Engine::Application::GetInstance().GetFramebufferSize();
-	    // m_SpriteRenderer->RenderSprite(m_BackgroundTexture, glm::vec2(0.0f, 0.0f), glm::vec2(framebufferSize.x, framebufferSize.y), 0.0f);
-
-		std::vector<GameEntity*> entities = m_GameWorld->GetEntities();
-
-	    for (auto i = 0; i < entities.size(); ++i)
-	    {
-			entities[i]->GetGraphics()->Update(*entities[i], *m_SpriteRenderer);
-	    }
-
 	    glViewport(0, 0, static_cast<GLint>(framebufferSize.x), static_cast<GLint>(framebufferSize.y));
 	    glGetError();
 	}

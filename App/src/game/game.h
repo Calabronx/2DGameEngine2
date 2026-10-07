@@ -2,7 +2,6 @@
 #ifndef GAME_APP_LAYER
 #define GAME_APP_LAYER
 
-#include <memory>
 #include <core/layer.h>
 #include <core/renderer/renderer.h>
 #include <core/renderer/sprite_renderer.h>
@@ -25,7 +24,6 @@ namespace Application {
 
 		private:
 			World										*m_GameWorld;
-			std::shared_ptr<Renderer::SpriteRenderer> 	m_SpriteRenderer;
 			Renderer::Texture 							m_BackgroundTexture;
 
 			uint32_t 	m_Shader = 0;

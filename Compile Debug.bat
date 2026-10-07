@@ -1,0 +1,1 @@
+msbuild "Core\GameMazeSurvivalProject.sln" /p:Configuration=Debug /p:Platform=x64

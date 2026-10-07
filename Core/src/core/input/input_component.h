@@ -11,6 +11,6 @@ class InputComponent
 
 	public:
 		virtual ~InputComponent() {}
-		virtual void Update(GameEntity& entity, World& world) = 0;
+		virtual void Update(GameEntity& entity, World& world, float ts) = 0;
 };
 #endif

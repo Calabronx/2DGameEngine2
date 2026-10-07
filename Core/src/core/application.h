@@ -42,9 +42,6 @@ namespace Engine
 
             static Application& GetInstance();
             static float GetTime();
-            static void     SetDeltaTime(float time);
-            static float    GetDeltaTime();
-
         private:
             ApplicationSpecification           m_Specification;
             std::shared_ptr<Window>            m_Window;
